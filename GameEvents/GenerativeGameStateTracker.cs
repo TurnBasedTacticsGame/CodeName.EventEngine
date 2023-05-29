@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventSystem.GameEvents
 {
     public class GenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CodeName.EventSystem.GameEvents;
 using Newtonsoft.Json;
 
-namespace CodeName.EventSystem.GameEvents
+namespace CodeName.EventSystem
 {
     public class GameEventNode<TGameState>
     {
