@@ -10,7 +10,7 @@ namespace CodeName.EventSystem.GameEvents
         [JsonConstructor]
         private GameEventNode() {}
 
-        public GameEventNode(GameEvent<TGameState> gameEvent, List<int> path, GameStateSerializer serializer)
+        public GameEventNode(GameEvent<TGameState> gameEvent, List<int> path, ISerializer serializer)
         {
             OriginalEvent = serializer.Clone(gameEvent);
             Event = serializer.Clone(gameEvent);

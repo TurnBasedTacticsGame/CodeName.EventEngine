@@ -12,12 +12,16 @@ namespace CodeName.EventSystem
         private int currentNodeIndex;
         private readonly List<QueuedEvent> queuedEvents = new();
 
+        private readonly GameStateTrackerConfig config;
+
         private readonly GameStateTracker<TGameState> originalTracker;
         private readonly GameEventTracker<TGameState> originalEvents;
 
-        public RegenerativeGameStateTracker(GameStateTracker<TGameState> tracker, GameStateSerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers) : base(tracker.OriginalState, serializer, gameEventHandlers)
+        public RegenerativeGameStateTracker(GameStateTracker<TGameState> tracker, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers, GameStateTrackerConfig config)
+            : base(tracker.OriginalState, serializer, gameEventHandlers)
         {
             originalTracker = tracker;
+            this.config = config;
             originalEvents = tracker.Events;
         }
 
@@ -173,7 +177,7 @@ namespace CodeName.EventSystem
 
         private void ValidateCurrentGameState(GameEventNode<TGameState> node)
         {
-            if (Constants.IsDebugMode && node.ExpectedDebugState != null)
+            if (config.IsDebugMode && node.ExpectedDebugState != null)
             {
                 var current = State;
                 var expected = node.ExpectedDebugState;

@@ -6,10 +6,10 @@ namespace CodeName.EventSystem
 {
     public abstract class GameStateTracker<TGameState>
     {
-        protected GameStateSerializer Serializer { get; }
+        protected ISerializer Serializer { get; }
         protected List<IGameEventHandler<TGameState>> GameEventHandlers { get; }
 
-        protected GameStateTracker(TGameState state, GameStateSerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers)
+        protected GameStateTracker(TGameState state, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers)
         {
             Serializer = serializer;
             GameEventHandlers = gameEventHandlers;

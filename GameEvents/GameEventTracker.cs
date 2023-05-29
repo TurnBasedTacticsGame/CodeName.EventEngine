@@ -4,9 +4,9 @@ namespace CodeName.EventSystem.GameEvents
 {
     public class GameEventTracker<TGameState>
     {
-        private readonly GameStateSerializer serializer;
+        private readonly ISerializer serializer;
 
-        public GameEventTracker(GameStateSerializer serializer)
+        public GameEventTracker(ISerializer serializer)
         {
             this.serializer = serializer;
 

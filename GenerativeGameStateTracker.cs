@@ -6,7 +6,13 @@ namespace CodeName.EventSystem
 {
     public class GenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
-        public GenerativeGameStateTracker(TGameState state, GameStateSerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers) : base(state, serializer, gameEventHandlers) {}
+        private readonly GameStateTrackerConfig config;
+
+        public GenerativeGameStateTracker(TGameState state, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers, GameStateTrackerConfig config)
+            : base(state, serializer, gameEventHandlers)
+        {
+            this.config = config;
+        }
 
         public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
@@ -25,7 +31,7 @@ namespace CodeName.EventSystem
 
         private void StoreDebugExpectedState(GameEventNode<TGameState> currentNode)
         {
-            if (Constants.IsDebugMode)
+            if (config.IsDebugMode)
             {
                 currentNode.ExpectedDebugState = Serializer.Clone(State);
             }
