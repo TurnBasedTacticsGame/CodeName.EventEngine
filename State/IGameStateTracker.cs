@@ -3,11 +3,11 @@ using CodeName.EventSystem.State.Tasks;
 
 namespace CodeName.EventSystem.State
 {
-    public interface IGameStateTracker<out TState> where TState : GameState
+    public interface IGameStateTracker<TGameState>
     {
-        public GameEventTracker Events { get; }
-        public TState State { get; }
+        public GameEventTracker<TGameState> Events { get; }
+        public TGameState State { get; }
 
-        public StateTask RaiseEvent(GameEvent gameEvent);
+        public StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
     }
 }

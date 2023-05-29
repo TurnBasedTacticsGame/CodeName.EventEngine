@@ -1,15 +1,15 @@
 namespace CodeName.EventSystem.State.GameEvents.Matching
 {
-    public readonly struct MatchOnResult<T> : INodeMatchResult where T : GameEvent
+    public readonly struct MatchOnResult<TGameEvent, TGameState> : INodeMatchResult<TGameState> where TGameEvent : GameEvent<TGameState>
     {
-        public MatchOnResult(GameStateTracker context, EventMatchCondition<T> condition)
+        public MatchOnResult(GameStateTracker<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition)
         {
             Tracker = context;
             Node = null;
             Event = null;
 
             var node = context.Events.CurrentNode;
-            if (node.Event is T gameEvent && (condition?.Invoke(gameEvent, node) ?? true))
+            if (node.Event is TGameEvent gameEvent && (condition?.Invoke(gameEvent, node) ?? true))
             {
                 Node = node;
                 Event = gameEvent;
@@ -18,11 +18,11 @@ namespace CodeName.EventSystem.State.GameEvents.Matching
 
         public bool IsSuccess => Event != null;
 
-        public GameStateTracker Tracker { get; }
-        public GameEventNode Node { get; }
-        public T Event { get; }
+        public GameStateTracker<TGameState> Tracker { get; }
+        public GameEventNode<TGameState> Node { get; }
+        public TGameEvent Event { get; }
 
-        public static implicit operator bool(MatchOnResult<T> value)
+        public static implicit operator bool(MatchOnResult<TGameEvent, TGameState> value)
         {
             return value.IsSuccess;
         }

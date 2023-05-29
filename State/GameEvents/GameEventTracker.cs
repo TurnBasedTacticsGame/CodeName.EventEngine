@@ -3,7 +3,7 @@ using CodeName.EventSystem.State.Serialization;
 
 namespace CodeName.EventSystem.State.GameEvents
 {
-    public class GameEventTracker
+    public class GameEventTracker<TGameState>
     {
         private readonly GameStateSerializer serializer;
 
@@ -11,20 +11,20 @@ namespace CodeName.EventSystem.State.GameEvents
         {
             this.serializer = serializer;
 
-            var root = new GameEventNode(EntityId.InvalidId, new TrackerRootEvent(), PathToCurrentNode, serializer);
+            var root = new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), PathToCurrentNode, serializer);
 
             Tree = root;
-            List = new List<GameEventNode>
+            List = new List<GameEventNode<TGameState>>
             {
                 root,
             };
         }
 
-        public GameEventNode Tree { get; }
-        public List<GameEventNode> List { get; }
+        public GameEventNode<TGameState> Tree { get; }
+        public List<GameEventNode<TGameState>> List { get; }
         public List<int> PathToCurrentNode { get; } = new();
 
-        public GameEventNode CurrentNode
+        public GameEventNode<TGameState> CurrentNode
         {
             get
             {
@@ -39,7 +39,7 @@ namespace CodeName.EventSystem.State.GameEvents
             }
         }
 
-        public GameEventNode Push(GameState gameState, GameEvent gameEvent)
+        public GameEventNode<TGameState> Push(TGameState gameState, GameEvent<TGameState> gameEvent)
         {
             var current = CurrentNode;
             var index = current.Children.Count;
@@ -47,7 +47,7 @@ namespace CodeName.EventSystem.State.GameEvents
             // Update path before passing to GameEventNode's constructor
             PathToCurrentNode.Add(index);
 
-            var node = new GameEventNode(gameState.GenerateId(), gameEvent, PathToCurrentNode, serializer);
+            var node = new GameEventNode<TGameState>( gameEvent, PathToCurrentNode, serializer);
             current.Children.Add(node);
 
             List.Add(node);

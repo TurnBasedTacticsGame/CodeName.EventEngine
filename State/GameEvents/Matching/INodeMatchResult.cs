@@ -1,8 +1,8 @@
 namespace CodeName.EventSystem.State.GameEvents.Matching
 {
-    public interface INodeMatchResult : IMatchResult
+    public interface INodeMatchResult<TGameState> : IMatchResult
     {
-        public GameStateTracker Tracker { get; }
-        public GameEventNode Node { get; }
+        public GameStateTracker<TGameState> Tracker { get; }
+        public GameEventNode<TGameState> Node { get; }
     }
 }

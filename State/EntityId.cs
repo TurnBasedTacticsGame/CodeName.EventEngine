@@ -4,13 +4,13 @@ namespace CodeName.EventSystem.State
 {
     public struct EntityId : IEquatable<EntityId>
     {
-        public static EntityId InvalidId => new(0);
+        public static EntityId InvalidId => new(Guid.Empty);
 
-        private readonly int internalId;
+        private readonly Guid internalId;
 
-        public EntityId(int id)
+        public EntityId(Guid guid)
         {
-            internalId = id;
+            internalId = guid;
         }
 
         public bool IsValid()
@@ -30,15 +30,15 @@ namespace CodeName.EventSystem.State
 
         public override int GetHashCode()
         {
-            return internalId;
+            return internalId.GetHashCode();
         }
 
-        public static explicit operator int(EntityId id)
+        public static explicit operator Guid(EntityId id)
         {
             return id.internalId;
         }
 
-        public static explicit operator EntityId(int id)
+        public static explicit operator EntityId(Guid id)
         {
             return new EntityId(id);
         }
@@ -56,6 +56,11 @@ namespace CodeName.EventSystem.State
         public override string ToString()
         {
             return internalId.ToString();
+        }
+
+        public static EntityId Create()
+        {
+            return new EntityId(Guid.NewGuid());
         }
     }
 }

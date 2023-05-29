@@ -4,23 +4,23 @@ namespace CodeName.EventSystem.State
 {
     public static class EventMatchingUtility
     {
-        public static MatchOnResult<T> MatchOn<T>(this GameStateTracker context, out MatchOnResult<T> result, EventMatchCondition<T> condition = null) where T : GameEvent
+        public static MatchOnResult<TGameEvent, TGameState> MatchOn<TGameEvent, TGameState>(this GameStateTracker<TGameState> context, out MatchOnResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
         {
-            result = new MatchOnResult<T>(context, condition);
+            result = new MatchOnResult<TGameEvent, TGameState>(context, condition);
 
             return result;
         }
 
-        public static CausedByMatchResult<T> CausedBy<T>(this INodeMatchResult context, out CausedByMatchResult<T> result, EventMatchCondition<T> condition = null) where T : GameEvent
+        public static CausedByMatchResult<TGameEvent, TGameState> CausedBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, out CausedByMatchResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
         {
-            result = new CausedByMatchResult<T>(context, condition);
+            result = new CausedByMatchResult<TGameEvent, TGameState>(context, condition);
 
             return result;
         }
 
-        public static PrecededByMatchResult<T> PrecededBy<T>(this INodeMatchResult context, out PrecededByMatchResult<T> result, EventMatchCondition<T> condition = null) where T : GameEvent
+        public static PrecededByMatchResult<TGameEvent, TGameState> PrecededBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, out PrecededByMatchResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
         {
-            result = new PrecededByMatchResult<T>(context, condition);
+            result = new PrecededByMatchResult<TGameEvent, TGameState>(context, condition);
 
             return result;
         }

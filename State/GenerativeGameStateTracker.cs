@@ -5,11 +5,11 @@ using CodeName.EventSystem.State.Tasks;
 
 namespace CodeName.EventSystem.State
 {
-    public class GenerativeGameStateTracker : GameStateTracker
+    public class GenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
-        public GenerativeGameStateTracker(GameState state, GameStateSerializer serializer, List<IGameEventHandler> gameEventHandlers) : base(state, serializer, gameEventHandlers) {}
+        public GenerativeGameStateTracker(TGameState state, GameStateSerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers) : base(state, serializer, gameEventHandlers) {}
 
-        public override async StateTask RaiseEvent(GameEvent gameEvent)
+        public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
             var currentNode = Events.Push(State, gameEvent);
             {
@@ -24,7 +24,7 @@ namespace CodeName.EventSystem.State
             Events.Pop();
         }
 
-        private void StoreDebugExpectedState(GameEventNode currentNode)
+        private void StoreDebugExpectedState(GameEventNode<TGameState> currentNode)
         {
             if (Constants.IsDebugMode)
             {

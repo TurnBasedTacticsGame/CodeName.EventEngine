@@ -8,21 +8,21 @@ using UnityEngine;
 
 namespace CodeName.EventSystem.State
 {
-    public class RegenerativeGameStateTracker : GameStateTracker
+    public class RegenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
         private int currentNodeIndex;
         private readonly List<QueuedEvent> queuedEvents = new();
 
-        private readonly GameStateTracker originalTracker;
-        private readonly GameEventTracker originalEvents;
+        private readonly GameStateTracker<TGameState> originalTracker;
+        private readonly GameEventTracker<TGameState> originalEvents;
 
-        public RegenerativeGameStateTracker(GameStateTracker tracker, GameStateSerializer serializer, List<IGameEventHandler> gameEventHandlers) : base(tracker.OriginalState, serializer, gameEventHandlers)
+        public RegenerativeGameStateTracker(GameStateTracker<TGameState> tracker, GameStateSerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers) : base(tracker.OriginalState, serializer, gameEventHandlers)
         {
             originalTracker = tracker;
             originalEvents = tracker.Events;
         }
 
-        public override StateTask RaiseEvent(GameEvent gameEvent)
+        public override StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
             // Save current event path
             // When a GameEventNode is popped, all queued events with a matching path will be completed
@@ -37,7 +37,7 @@ namespace CodeName.EventSystem.State
             return new StateTask(queuedEvent.CompletionSource);
         }
 
-        public bool TryReplayNextEventNode(out GameEventNode node, out Action apply)
+        public bool TryReplayNextEventNode(out GameEventNode<TGameState> node, out Action apply)
         {
             if (currentNodeIndex == 0)
             {
@@ -86,7 +86,7 @@ namespace CodeName.EventSystem.State
             return true;
         }
 
-        private void PopToMatchingLevel(GameEventNode originalNode)
+        private void PopToMatchingLevel(GameEventNode<TGameState> originalNode)
         {
             while (!IsMatchingLevel(originalNode) && Events.PathToCurrentNode.Count != 0)
             {
@@ -135,7 +135,7 @@ namespace CodeName.EventSystem.State
         /// <summary>
         ///     Technically matching level - 1. A level is matching when pushing a new node will cause the new node to have the same path as the original node.
         /// </summary>
-        private bool IsMatchingLevel(GameEventNode originalNode)
+        private bool IsMatchingLevel(GameEventNode<TGameState> originalNode)
         {
             if (Events.PathToCurrentNode.Count != originalNode.Path.Count - 1)
             {
@@ -172,7 +172,7 @@ namespace CodeName.EventSystem.State
             }
         }
 
-        private void ValidateCurrentGameState(GameEventNode node)
+        private void ValidateCurrentGameState(GameEventNode<TGameState> node)
         {
             if (Constants.IsDebugMode && node.ExpectedDebugState != null)
             {
@@ -189,7 +189,7 @@ namespace CodeName.EventSystem.State
             }
         }
 
-        private bool HasDifferences(GameState current, GameState expected, out string currentJson, out string expectedJson)
+        private bool HasDifferences(TGameState current, TGameState expected, out string currentJson, out string expectedJson)
         {
             currentJson = Serializer.Serialize(current);
             expectedJson = Serializer.Serialize(expected);

@@ -5,26 +5,26 @@ using CodeName.EventSystem.State.Tasks;
 
 namespace CodeName.EventSystem.State
 {
-    public abstract class GameStateTracker
+    public abstract class GameStateTracker<TGameState>
     {
         protected GameStateSerializer Serializer { get; }
-        protected List<IGameEventHandler> GameEventHandlers { get; }
+        protected List<IGameEventHandler<TGameState>> GameEventHandlers { get; }
 
-        protected GameStateTracker(GameState state, GameStateSerializer serializer, List<IGameEventHandler> gameEventHandlers)
+        protected GameStateTracker(TGameState state, GameStateSerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers)
         {
             Serializer = serializer;
             GameEventHandlers = gameEventHandlers;
 
-            Events = new GameEventTracker(serializer);
+            Events = new GameEventTracker<TGameState>(serializer);
 
             OriginalState = serializer.Clone(state);
             State = serializer.Clone(state);
         }
 
-        public GameEventTracker Events { get; }
+        public GameEventTracker<TGameState> Events { get; }
 
-        public GameState OriginalState { get; protected set; }
-        public GameState State { get; protected set; }
+        public TGameState OriginalState { get; protected set; }
+        public TGameState State { get; protected set; }
 
         /// <summary>
         ///     Raise an event to be applied.
@@ -36,9 +36,9 @@ namespace CodeName.EventSystem.State
         ///     2. OnEventConfirmed - Use to react to events before they are applied. <br/>
         ///     3. OnEventApplied - Use to react to events after they are applied.
         /// </summary>
-        public abstract StateTask RaiseEvent(GameEvent gameEvent);
+        public abstract StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
 
-        protected virtual async StateTask OnEventRaised(GameEventNode node)
+        protected virtual async StateTask OnEventRaised(GameEventNode<TGameState> node)
         {
             foreach (var gameEventHandler in GameEventHandlers)
             {
@@ -46,7 +46,7 @@ namespace CodeName.EventSystem.State
             }
         }
 
-        protected virtual async StateTask OnEventConfirmed(GameEventNode node)
+        protected virtual async StateTask OnEventConfirmed(GameEventNode<TGameState> node)
         {
             foreach (var gameEventHandler in GameEventHandlers)
             {
@@ -54,7 +54,7 @@ namespace CodeName.EventSystem.State
             }
         }
 
-        protected virtual async StateTask OnEventApplied(GameEventNode node)
+        protected virtual async StateTask OnEventApplied(GameEventNode<TGameState> node)
         {
             foreach (var gameEventHandler in GameEventHandlers)
             {

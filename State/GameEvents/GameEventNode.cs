@@ -6,15 +6,13 @@ using Newtonsoft.Json;
 
 namespace CodeName.EventSystem.State.GameEvents
 {
-    public class GameEventNode
+    public class GameEventNode<TGameState>
     {
         [JsonConstructor]
         private GameEventNode() {}
 
-        public GameEventNode(EntityId id, GameEvent gameEvent, List<int> path, GameStateSerializer serializer)
+        public GameEventNode(GameEvent<TGameState> gameEvent, List<int> path, GameStateSerializer serializer)
         {
-            Id = id;
-
             OriginalEvent = serializer.Clone(gameEvent);
             Event = serializer.Clone(gameEvent);
 
@@ -24,7 +22,7 @@ namespace CodeName.EventSystem.State.GameEvents
         /// <summary>
         ///     Unique ID of this event.
         /// </summary>
-        [JsonProperty] public EntityId Id { get; private set; }
+        [JsonProperty] public EntityId Id { get; private set; } = EntityId.Create();
 
         /// <summary>
         ///     The original event as created by the event raiser.
@@ -32,7 +30,7 @@ namespace CodeName.EventSystem.State.GameEvents
         ///     Modifying this event is not recommended.
         /// </summary>
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
-        public GameEvent OriginalEvent { get; private set; }
+        public GameEvent<TGameState> OriginalEvent { get; private set; }
 
         /// <summary>
         ///     The event that will be applied after the OnEventConfirmed phase.
@@ -40,10 +38,10 @@ namespace CodeName.EventSystem.State.GameEvents
         ///     Modifying this event is allowed.
         /// </summary>
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
-        public GameEvent Event { get; private set; }
+        public GameEvent<TGameState> Event { get; private set; }
 
         /// <summary>
-        ///     The path of this <see cref="GameEventNode"/> in the event tree.
+        ///     The path of this <see cref="GameEventNode{TState}"/> in the event tree.
         /// </summary>
         [JsonProperty] public List<int> Path { get; private set; }
 
@@ -52,14 +50,14 @@ namespace CodeName.EventSystem.State.GameEvents
         ///     <para/>
         ///     In other words, child events are events caused by this event.
         /// </summary>
-        [JsonProperty] public List<GameEventNode> Children { get; private set; } = new();
+        [JsonProperty] public List<GameEventNode<TGameState>> Children { get; private set; } = new();
 
         /// <summary>
         ///     A locked event can no longer be prevented.
         /// </summary>
         [JsonProperty] public bool IsLocked { get; private set; }
 
-        [JsonIgnore] public GameState ExpectedDebugState { get; set; }
+        [JsonIgnore] public TGameState ExpectedDebugState { get; set; }
 
         /// <summary>
         ///     Prevent an event from being applied.
@@ -74,16 +72,16 @@ namespace CodeName.EventSystem.State.GameEvents
                 throw new InvalidOperationException("Event has been locked. Events can only be prevented during the OnEventRaised event.");
             }
 
-            if (Event is PreventedEvent)
+            if (Event is PreventedEvent<TGameState>)
             {
                 throw new InvalidOperationException("Event has already been prevented. Events can only be prevented once.");
             }
 
-            Event = new PreventedEvent(Event);
+            Event = new PreventedEvent<TGameState>(Event);
         }
 
         /// <summary>
-        ///     Called by <see cref="GameStateTracker"/> after the OnEventRaised event.
+        ///     Called by <see cref="GameStateTracker{TGameState}"/> after the OnEventRaised event.
         /// </summary>
         public void Lock()
         {

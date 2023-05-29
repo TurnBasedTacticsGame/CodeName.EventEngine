@@ -3,14 +3,14 @@ namespace CodeName.EventSystem.State.GameEvents
     /// <summary>
     ///     Null object used to replace an event that was prevented.
     /// </summary>
-    public class PreventedEvent : GameEvent
+    public class PreventedEvent<TGameState> : GameEvent<TGameState>
     {
-        public PreventedEvent(GameEvent originalEvent)
+        public PreventedEvent(GameEvent<TGameState> originalEvent)
         {
             OriginalEvent = originalEvent;
         }
 
-        public GameEvent OriginalEvent { get; }
+        public GameEvent<TGameState> OriginalEvent { get; }
 
         public override string ToString()
         {

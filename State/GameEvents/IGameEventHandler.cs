@@ -2,12 +2,12 @@ using CodeName.EventSystem.State.Tasks;
 
 namespace CodeName.EventSystem.State.GameEvents
 {
-    public interface IGameEventHandler
+    public interface IGameEventHandler<TGameState>
     {
-        public StateTask OnEventRaised(GameStateTracker tracker, GameEventNode node);
+        public StateTask OnEventRaised(GameStateTracker<TGameState> tracker, GameEventNode<TGameState> node);
 
-        public StateTask OnEventConfirmed(GameStateTracker tracker, GameEventNode node);
+        public StateTask OnEventConfirmed(GameStateTracker<TGameState> tracker, GameEventNode<TGameState> node);
 
-        public StateTask OnEventApplied(GameStateTracker tracker, GameEventNode node);
+        public StateTask OnEventApplied(GameStateTracker<TGameState> tracker, GameEventNode<TGameState> node);
     }
 }
