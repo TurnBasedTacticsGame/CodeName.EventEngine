@@ -2,22 +2,14 @@
     "name": "CodeName.EventSystem",
     "rootNamespace": "",
     "references": [
-        "Exanite.Core",
-        "Newtonsoft.Json.UnityConverters",
-        "Project.Source",
-        "UniDi.UniDi"
+        "Exanite.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "0Harmony.dll",
-        "CodegenCS.dll",
-        "Newtonsoft.Json.dll",
-        "Sirenix.OdinInspector.Attributes.dll",
-        "Sirenix.Serialization.dll",
-        "UniDi-Usage.dll"
+        "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
