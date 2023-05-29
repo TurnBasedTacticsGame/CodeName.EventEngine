@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace CodeName.EventSystem.Serialization
 {
-    public class GameEntityIdConverter : JsonConverter
+    public class EntityIdConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
