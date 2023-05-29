@@ -22,7 +22,7 @@ namespace CodeName.EventSystem
         /// <summary>
         ///     Unique ID of this event.
         /// </summary>
-        [JsonProperty] public EntityId Id { get; private set; } = EntityId.Create();
+        [JsonProperty] public EntityId Id { get; private set; } = EntityId.Generate();
 
         /// <summary>
         ///     The original event as created by the event raiser.

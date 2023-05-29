@@ -58,7 +58,7 @@ namespace CodeName.EventSystem
             return internalId.ToString();
         }
 
-        public static EntityId Create()
+        public static EntityId Generate()
         {
             return new EntityId(Guid.NewGuid());
         }
