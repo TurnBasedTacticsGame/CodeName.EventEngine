@@ -2,13 +2,13 @@ using System;
 
 namespace CodeName.EventSystem
 {
-    public struct EntityId : IEquatable<EntityId>
+    public struct EventId : IEquatable<EventId>
     {
-        public static EntityId InvalidId => new(Guid.Empty);
+        public static EventId InvalidId => new(Guid.Empty);
 
         private readonly Guid internalId;
 
-        public EntityId(Guid guid)
+        public EventId(Guid guid)
         {
             internalId = guid;
         }
@@ -18,14 +18,14 @@ namespace CodeName.EventSystem
             return this != InvalidId;
         }
 
-        public bool Equals(EntityId other)
+        public bool Equals(EventId other)
         {
             return internalId == other.internalId;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is EntityId other && Equals(other);
+            return obj is EventId other && Equals(other);
         }
 
         public override int GetHashCode()
@@ -33,22 +33,22 @@ namespace CodeName.EventSystem
             return internalId.GetHashCode();
         }
 
-        public static explicit operator Guid(EntityId id)
+        public static explicit operator Guid(EventId id)
         {
             return id.internalId;
         }
 
-        public static explicit operator EntityId(Guid id)
+        public static explicit operator EventId(Guid id)
         {
-            return new EntityId(id);
+            return new EventId(id);
         }
 
-        public static bool operator ==(EntityId left, EntityId right)
+        public static bool operator ==(EventId left, EventId right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(EntityId left, EntityId right)
+        public static bool operator !=(EventId left, EventId right)
         {
             return !left.Equals(right);
         }
@@ -58,9 +58,9 @@ namespace CodeName.EventSystem
             return internalId.ToString();
         }
 
-        public static EntityId Generate()
+        public static EventId Generate()
         {
-            return new EntityId(Guid.NewGuid());
+            return new EventId(Guid.NewGuid());
         }
     }
 }
