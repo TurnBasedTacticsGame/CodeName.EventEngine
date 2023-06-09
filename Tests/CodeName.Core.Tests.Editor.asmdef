@@ -1,0 +1,27 @@
+{
+    "name": "CodeName.EventSystem.Tests.Editor",
+    "rootNamespace": "",
+    "references": [
+        "CodeName.EventSystem",
+        "Exanite.Core",
+        "UniDi.UniDi",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "UniDi-Usage.dll",
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
