@@ -103,7 +103,7 @@ namespace CodeName.EventSystem
                 childEventTextBuilder.Append(node.ToString(level + 1));
             }
 
-            return $"{indent}{Event} ({Id})\n{childEventTextBuilder}";
+            return $"{indent}{Event}\n{childEventTextBuilder}";
         }
     }
 }
