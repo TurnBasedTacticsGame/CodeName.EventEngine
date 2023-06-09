@@ -1,4 +1,4 @@
-namespace CodeName.EventSystem
+namespace CodeName.EventSystem.GameEvents
 {
     public class GameStateTrackerConfig
     {
