@@ -46,7 +46,7 @@ namespace CodeName.EventSystem.GameEvents
             // Update path before passing to GameEventNode's constructor
             PathToCurrentNode.Add(index);
 
-            var node = new GameEventNode<TGameState>( gameEvent, PathToCurrentNode, serializer);
+            var node = new GameEventNode<TGameState>(gameEvent, PathToCurrentNode, serializer);
             current.Children.Add(node);
 
             List.Add(node);
