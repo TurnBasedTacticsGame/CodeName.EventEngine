@@ -11,7 +11,16 @@ namespace CodeName.EventSystem
 
         public override string ToString()
         {
-            return GetType().Name;
+            var name = GetType().Name;
+
+            // Remove generic argument
+            var genericArgIndex = name.IndexOf('`');
+            if (genericArgIndex > 0)
+            {
+                name = name.Substring(0, genericArgIndex);
+            }
+
+            return name;
         }
     }
 }
