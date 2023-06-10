@@ -9,7 +9,9 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Newtonsoft.Json.dll"
+        "JsonPatch.Net.dll",
+        "Newtonsoft.Json.dll",
+        "System.Text.Json.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

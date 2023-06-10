@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
+using Json.Patch;
 using UnityEngine;
 
 namespace CodeName.EventSystem
@@ -164,7 +166,7 @@ namespace CodeName.EventSystem
             if (HasDifferences(current, expected, out var currentJson, out var expectedJson))
             {
                 Debug.LogWarning("Mismatch between current and expected game state:" +
-                    $"\n\nDiff: {CreateDiffLink(currentJson, expectedJson)} (Current on left, expected on right)\n");
+                    $"\n\nDiff - JSON Patch (RFC 6902): Applying the shown diff on the current state will give the expected state.\n{CreateDiff(currentJson, expectedJson)}\n");
             }
 
             if (Events.Tree.ToString() != originalEvents.Tree.ToString())
@@ -185,7 +187,7 @@ namespace CodeName.EventSystem
                 if (HasDifferences(current, expected, out var currentJson, out var expectedJson))
                 {
                     Debug.LogWarning("Setting current state to expected state. Mismatch between current and expected game state while replaying events:" +
-                        $"\n\nDiff: {CreateDiffLink(currentJson, expectedJson)} (Current on left, expected on right)\n");
+                        $"\n\nDiff - JSON Patch (RFC 6902): Applying the shown diff on the current state will give the expected state.\n{CreateDiff(currentJson, expectedJson)}\n");
 
                     State = Serializer.Clone(expected);
                 }
@@ -200,11 +202,17 @@ namespace CodeName.EventSystem
             return currentJson != expectedJson;
         }
 
-        private string CreateDiffLink(string currentJson, string expectedJson)
+        private string CreateDiff(string currentJson, string expectedJson)
         {
-            var link = $"https://jsoneditoronline.org/#left=json.{HttpUtility.UrlEncode(currentJson)}&right=json.{HttpUtility.UrlEncode(expectedJson)}";
+            var current = JsonNode.Parse(currentJson);
+            var expected = JsonNode.Parse(expectedJson);
 
-            return $"<a href=\"{link}\">Json Editor Online</a>";
+            var patch = current.CreatePatch(expected);
+
+            return JsonSerializer.Serialize(patch, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            });
         }
 
         private struct QueuedEvent
