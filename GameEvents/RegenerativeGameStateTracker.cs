@@ -12,13 +12,17 @@ namespace CodeName.EventSystem.GameEvents
 
         private readonly GameStateTrackerConfig config;
 
-        private readonly GameEventTracker<TGameState> originalEvents;
+        private readonly GameEventTracker<TGameState> original;
 
-        public RegenerativeGameStateTracker(GameStateTracker<TGameState> tracker, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers, GameStateTrackerConfig config)
-            : base(tracker.OriginalState, serializer, gameEventHandlers)
+        public RegenerativeGameStateTracker(
+            TGameState state,
+            GameEventTracker<TGameState> tracker,
+            ISerializer serializer,
+            List<IGameEventHandler<TGameState>> gameEventHandlers,
+            GameStateTrackerConfig config) : base(state, serializer, gameEventHandlers)
         {
             this.config = config;
-            originalEvents = tracker.Events;
+            original = tracker;
         }
 
         public override StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
@@ -44,7 +48,7 @@ namespace CodeName.EventSystem.GameEvents
                 currentNodeIndex++;
             }
 
-            if (currentNodeIndex >= originalEvents.List.Count)
+            if (currentNodeIndex >= original.List.Count)
             {
                 while (Events.PathToCurrentNode.Count != 0)
                 {
@@ -57,7 +61,7 @@ namespace CodeName.EventSystem.GameEvents
                 return false;
             }
 
-            var originalNode = originalEvents.List[currentNodeIndex];
+            var originalNode = original.List[currentNodeIndex];
             currentNodeIndex++;
 
             PopToMatchingLevel(originalNode);
