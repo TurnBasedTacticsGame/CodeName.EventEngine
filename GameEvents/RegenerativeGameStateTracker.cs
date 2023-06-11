@@ -87,6 +87,7 @@ namespace CodeName.EventSystem.GameEvents
             var shouldValidate = config.IsDebugMode && node.ExpectedDebugState != null;
             if (shouldValidate && !DiffUtility.ValidateGameState(config.Serializer, State, node))
             {
+                // State has de-synced, re-sync by replacing current state with expected.
                 State = config.Serializer.Clone(node.ExpectedDebugState);
             }
         }
