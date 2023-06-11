@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
-using Json.Patch;
-using UnityEngine;
+using CodeName.EventSystem.Utility;
 
 namespace CodeName.EventSystem
 {
@@ -16,13 +13,11 @@ namespace CodeName.EventSystem
 
         private readonly GameStateTrackerConfig config;
 
-        private readonly GameStateTracker<TGameState> originalTracker;
         private readonly GameEventTracker<TGameState> originalEvents;
 
         public RegenerativeGameStateTracker(GameStateTracker<TGameState> tracker, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers, GameStateTrackerConfig config)
             : base(tracker.OriginalState, serializer, gameEventHandlers)
         {
-            originalTracker = tracker;
             this.config = config;
             originalEvents = tracker.Events;
         }
@@ -82,7 +77,11 @@ namespace CodeName.EventSystem
                     await currentNode.Event.Apply(this);
                     await OnEventApplied(Events.CurrentNode);
 
-                    ValidateCurrentGameState(Events.CurrentNode);
+                    if (config.IsDebugMode && currentNode.ExpectedDebugState != null)
+                    {
+                        DiffUtility.ValidateGameState(Serializer, State, currentNode);
+                        State = Serializer.Clone(currentNode.ExpectedDebugState);
+                    }
                 }
 
                 Apply().Forget();
@@ -156,63 +155,6 @@ namespace CodeName.EventSystem
             }
 
             return true;
-        }
-
-        public void ValidateTrackerState()
-        {
-            var current = State;
-            var expected = originalTracker.State;
-
-            if (HasDifferences(current, expected, out var currentJson, out var expectedJson))
-            {
-                Debug.LogWarning("Mismatch between current and expected game state:" +
-                    $"\n\nDiff - JSON Patch (RFC 6902): Applying the shown diff on the current state will give the expected state.\n{CreateDiff(currentJson, expectedJson)}\n");
-            }
-
-            if (Events.Tree.ToString() != originalEvents.Tree.ToString())
-            {
-                Debug.LogWarning("Mismatch between current and expected event trees:" +
-                    $"\n\nCurrent: {Events.Tree}" +
-                    $"\n\nExpected: {originalEvents.Tree}");
-            }
-        }
-
-        private void ValidateCurrentGameState(GameEventNode<TGameState> node)
-        {
-            if (config.IsDebugMode && node.ExpectedDebugState != null)
-            {
-                var current = State;
-                var expected = node.ExpectedDebugState;
-
-                if (HasDifferences(current, expected, out var currentJson, out var expectedJson))
-                {
-                    Debug.LogWarning("Setting current state to expected state. Mismatch between current and expected game state while replaying events:" +
-                        $"\n\nDiff - JSON Patch (RFC 6902): Applying the shown diff on the current state will give the expected state.\n{CreateDiff(currentJson, expectedJson)}\n");
-
-                    State = Serializer.Clone(expected);
-                }
-            }
-        }
-
-        private bool HasDifferences(TGameState current, TGameState expected, out string currentJson, out string expectedJson)
-        {
-            currentJson = Serializer.Serialize(current);
-            expectedJson = Serializer.Serialize(expected);
-
-            return currentJson != expectedJson;
-        }
-
-        private string CreateDiff(string currentJson, string expectedJson)
-        {
-            var current = JsonNode.Parse(currentJson);
-            var expected = JsonNode.Parse(expectedJson);
-
-            var patch = current.CreatePatch(expected);
-
-            return JsonSerializer.Serialize(patch, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-            });
         }
 
         private struct QueuedEvent
