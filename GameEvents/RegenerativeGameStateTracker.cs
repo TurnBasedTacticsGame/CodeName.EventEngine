@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventSystem.GameEvents
 {
     public class RegenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
