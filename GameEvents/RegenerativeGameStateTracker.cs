@@ -84,9 +84,9 @@ namespace CodeName.EventSystem.GameEvents
             await node.Event.Apply(this);
             await OnEventApplied(node);
 
-            if (config.IsDebugMode && node.ExpectedDebugState != null)
+            var shouldValidate = config.IsDebugMode && node.ExpectedDebugState != null;
+            if (shouldValidate && !DiffUtility.ValidateGameState(config.Serializer, State, node))
             {
-                DiffUtility.ValidateGameState(config.Serializer, State, node);
                 State = config.Serializer.Clone(node.ExpectedDebugState);
             }
         }
