@@ -70,25 +70,25 @@ namespace CodeName.EventSystem.GameEvents
             node = currentNode;
             apply = () =>
             {
-                async StateTask Apply()
-                {
-                    await OnEventRaised(currentNode);
-                    currentNode.Lock();
-                    await OnEventConfirmed(currentNode);
-                    await currentNode.Event.Apply(this);
-                    await OnEventApplied(Events.CurrentNode);
-
-                    if (config.IsDebugMode && currentNode.ExpectedDebugState != null)
-                    {
-                        DiffUtility.ValidateGameState(config.Serializer, State, currentNode);
-                        State = config.Serializer.Clone(currentNode.ExpectedDebugState);
-                    }
-                }
-
-                Apply().Forget();
+                ReplayNode(currentNode).Forget();
             };
 
             return true;
+        }
+
+        private async StateTask ReplayNode(GameEventNode<TGameState> node)
+        {
+            await OnEventRaised(node);
+            node.Lock();
+            await OnEventConfirmed(node);
+            await node.Event.Apply(this);
+            await OnEventApplied(node);
+
+            if (config.IsDebugMode && node.ExpectedDebugState != null)
+            {
+                DiffUtility.ValidateGameState(config.Serializer, State, node);
+                State = config.Serializer.Clone(node.ExpectedDebugState);
+            }
         }
 
         private void PopToMatchingLevel(GameEventNode<TGameState> originalNode)
