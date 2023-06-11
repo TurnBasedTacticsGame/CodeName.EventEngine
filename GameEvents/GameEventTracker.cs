@@ -6,9 +6,13 @@ namespace CodeName.EventSystem.GameEvents
     {
         private readonly ISerializer serializer;
 
+        /// <summary>
+        ///     Creates a new <see cref="GameEventTracker{TGameState}"/>.
+        /// </summary>
         public GameEventTracker(ISerializer serializer)
         {
             this.serializer = serializer;
+            PathToCurrentNode = new List<int>();
 
             var root = new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), PathToCurrentNode, serializer);
 
@@ -19,9 +23,27 @@ namespace CodeName.EventSystem.GameEvents
             };
         }
 
+        /// <summary>
+        ///     Creates a new <see cref="GameEventTracker{TGameState}"/> using an existing event tree.
+        ///     <para/>
+        ///     Note: This does not clone the existing event tree. The passed in event tree is used directly.
+        ///     If this is not desirable, clone the tree before passing it in.
+        /// </summary>
+        public GameEventTracker(ISerializer serializer, GameEventNode<TGameState> root)
+        {
+            this.serializer = serializer;
+
+            Tree = root;
+
+            List = new List<GameEventNode<TGameState>>();
+            FlattenEventTree(root, List);
+
+            PathToCurrentNode = new List<int>(List[List.Count - 1].Path);
+        }
+
         public GameEventNode<TGameState> Tree { get; }
         public List<GameEventNode<TGameState>> List { get; }
-        public List<int> PathToCurrentNode { get; } = new();
+        public List<int> PathToCurrentNode { get; }
 
         public GameEventNode<TGameState> CurrentNode
         {
@@ -57,6 +79,15 @@ namespace CodeName.EventSystem.GameEvents
         public void Pop()
         {
             PathToCurrentNode.RemoveAt(PathToCurrentNode.Count - 1);
+        }
+
+        private void FlattenEventTree(GameEventNode<TGameState> root, List<GameEventNode<TGameState>> results)
+        {
+            results.Add(root);
+            foreach (var childEventNode in root.Children)
+            {
+                FlattenEventTree(childEventNode, results);
+            }
         }
     }
 }
