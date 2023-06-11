@@ -10,16 +10,14 @@ namespace CodeName.EventSystem.GameEvents
         private int currentNodeIndex;
         private readonly List<QueuedEvent> queuedEvents = new();
 
-        private readonly GameStateTrackerConfig config;
+        private readonly GameStateTrackerConfig<TGameState> config;
 
         private readonly GameEventTracker<TGameState> original;
 
         public RegenerativeGameStateTracker(
             TGameState state,
             GameEventTracker<TGameState> tracker,
-            ISerializer serializer,
-            List<IGameEventHandler<TGameState>> gameEventHandlers,
-            GameStateTrackerConfig config) : base(state, serializer, gameEventHandlers)
+            GameStateTrackerConfig<TGameState> config) : base(state, config)
         {
             this.config = config;
             original = tracker;
@@ -82,8 +80,8 @@ namespace CodeName.EventSystem.GameEvents
 
                     if (config.IsDebugMode && currentNode.ExpectedDebugState != null)
                     {
-                        DiffUtility.ValidateGameState(Serializer, State, currentNode);
-                        State = Serializer.Clone(currentNode.ExpectedDebugState);
+                        DiffUtility.ValidateGameState(config.Serializer, State, currentNode);
+                        State = config.Serializer.Clone(currentNode.ExpectedDebugState);
                     }
                 }
 

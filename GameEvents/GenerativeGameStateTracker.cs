@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 
 namespace CodeName.EventSystem.GameEvents
 {
     public class GenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
-        private readonly GameStateTrackerConfig config;
+        private readonly GameStateTrackerConfig<TGameState> config;
 
-        public GenerativeGameStateTracker(TGameState state, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers, GameStateTrackerConfig config)
-            : base(state, serializer, gameEventHandlers)
+        public GenerativeGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)
+            : base(state, config)
         {
             this.config = config;
         }
@@ -32,7 +31,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             if (config.IsDebugMode)
             {
-                currentNode.ExpectedDebugState = Serializer.Clone(State);
+                currentNode.ExpectedDebugState = config.Serializer.Clone(State);
             }
         }
     }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
 
@@ -6,18 +5,16 @@ namespace CodeName.EventSystem
 {
     public abstract class GameStateTracker<TGameState>
     {
-        protected ISerializer Serializer { get; }
-        protected List<IGameEventHandler<TGameState>> GameEventHandlers { get; }
+        private readonly GameStateTrackerConfig<TGameState> config;
 
-        protected GameStateTracker(TGameState state, ISerializer serializer, List<IGameEventHandler<TGameState>> gameEventHandlers)
+        protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)
         {
-            Serializer = serializer;
-            GameEventHandlers = gameEventHandlers;
+            this.config = config;
 
-            Events = new GameEventTracker<TGameState>(serializer);
+            Events = new GameEventTracker<TGameState>(config.Serializer);
 
-            OriginalState = serializer.Clone(state);
-            State = serializer.Clone(state);
+            OriginalState = config.Serializer.Clone(state);
+            State = config.Serializer.Clone(state);
         }
 
         public GameEventTracker<TGameState> Events { get; }
@@ -39,7 +36,7 @@ namespace CodeName.EventSystem
 
         protected virtual async StateTask OnEventRaised(GameEventNode<TGameState> node)
         {
-            foreach (var gameEventHandler in GameEventHandlers)
+            foreach (var gameEventHandler in config.GameEventHandlers)
             {
                 await gameEventHandler.OnEventRaised(this, node);
             }
@@ -47,7 +44,7 @@ namespace CodeName.EventSystem
 
         protected virtual async StateTask OnEventConfirmed(GameEventNode<TGameState> node)
         {
-            foreach (var gameEventHandler in GameEventHandlers)
+            foreach (var gameEventHandler in config.GameEventHandlers)
             {
                 await gameEventHandler.OnEventConfirmed(this, node);
             }
@@ -55,7 +52,7 @@ namespace CodeName.EventSystem
 
         protected virtual async StateTask OnEventApplied(GameEventNode<TGameState> node)
         {
-            foreach (var gameEventHandler in GameEventHandlers)
+            foreach (var gameEventHandler in config.GameEventHandlers)
             {
                 await gameEventHandler.OnEventApplied(this, node);
             }
