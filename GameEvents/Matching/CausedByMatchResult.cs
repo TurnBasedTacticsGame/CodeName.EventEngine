@@ -18,7 +18,7 @@ namespace CodeName.EventSystem.GameEvents.Matching
 
             for (var i = 0; i < path.Count; i++)
             {
-                if (currentNode.Event is TGameEvent gameEvent && (condition?.Invoke(gameEvent, currentNode) ?? true))
+                if (currentNode.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TGameState>(Tracker, currentNode, gameEvent)) ?? true))
                 {
                     Node = currentNode;
                     Event = gameEvent;

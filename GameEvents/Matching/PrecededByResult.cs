@@ -1,6 +1,6 @@
 namespace CodeName.EventSystem.GameEvents.Matching
 {
-    public struct PrecededByMatchResult<TGameEvent, TGameState> : INodeMatchResult<TGameState> where TGameEvent : GameEvent<TGameState>
+    public readonly struct PrecededByMatchResult<TGameEvent, TGameState> : INodeMatchResult<TGameState> where TGameEvent : GameEvent<TGameState>
     {
         public PrecededByMatchResult(INodeMatchResult<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition)
         {
@@ -18,7 +18,7 @@ namespace CodeName.EventSystem.GameEvents.Matching
             for (var i = startIndex; i >= 0; i--)
             {
                 var node = events[i];
-                if (node.Event is TGameEvent gameEvent && (condition?.Invoke(gameEvent, node) ?? true))
+                if (node.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TGameState>(Tracker, node, gameEvent)) ?? true))
                 {
                     Node = node;
                     Event = gameEvent;
