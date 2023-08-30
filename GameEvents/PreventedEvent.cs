@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace CodeName.EventSystem.GameEvents
 {
     /// <summary>
@@ -10,6 +12,7 @@ namespace CodeName.EventSystem.GameEvents
             OriginalEvent = originalEvent;
         }
 
+        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public GameEvent<TGameState> OriginalEvent { get; }
 
         public override string ToString()
