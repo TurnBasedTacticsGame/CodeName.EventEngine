@@ -17,12 +17,5 @@ namespace CodeName.EventSystem
 
             return result;
         }
-
-        public static PrecededByMatchResult<TGameEvent, TGameState> PrecededBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, out PrecededByMatchResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
-        {
-            result = new PrecededByMatchResult<TGameEvent, TGameState>(context, condition);
-
-            return result;
-        }
     }
 }
