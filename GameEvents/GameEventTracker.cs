@@ -7,7 +7,7 @@ namespace CodeName.EventSystem.GameEvents
         private readonly ISerializer serializer;
 
         /// <summary>
-        ///     Creates a new <see cref="GameEventTracker{TGameState}"/>.
+        /// Creates a new <see cref="GameEventTracker{TGameState}"/>.
         /// </summary>
         public GameEventTracker(ISerializer serializer)
         {
@@ -24,10 +24,10 @@ namespace CodeName.EventSystem.GameEvents
         }
 
         /// <summary>
-        ///     Creates a new <see cref="GameEventTracker{TGameState}"/> using an existing event tree.
-        ///     <para/>
-        ///     Note: This does not clone the existing event tree. The passed in event tree is used directly.
-        ///     If this is not desirable, clone the tree before passing it in.
+        /// Creates a new <see cref="GameEventTracker{TGameState}"/> using an existing event tree.
+        /// <para/>
+        /// Note: This does not clone the existing event tree. The passed in event tree is used directly.
+        /// If this is not desirable, clone the tree before passing it in.
         /// </summary>
         public GameEventTracker(ISerializer serializer, GameEventNode<TGameState> root)
         {

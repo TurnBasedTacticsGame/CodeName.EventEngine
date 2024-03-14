@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace CodeName.EventSystem.GameEvents
 {
     /// <summary>
-    ///     Null object used to replace an event that was prevented.
+    /// Null object used to replace an event that was prevented.
     /// </summary>
     public class PreventedEvent<TGameState> : GameEvent<TGameState>
     {

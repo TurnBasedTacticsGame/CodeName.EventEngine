@@ -139,7 +139,7 @@ namespace CodeName.EventSystem.GameEvents
         }
 
         /// <summary>
-        ///     Technically matching level - 1. A level is matching when pushing a new node will cause the new node to have the same path as the original node.
+        /// Technically matching level - 1. A level is matching when pushing a new node will cause the new node to have the same path as the original node.
         /// </summary>
         private bool IsMatchingLevel(GameEventNode<TGameState> originalNode)
         {

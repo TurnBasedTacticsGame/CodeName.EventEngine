@@ -20,50 +20,50 @@ namespace CodeName.EventSystem
         }
 
         /// <summary>
-        ///     Unique ID of this event.
+        /// Unique ID of this event.
         /// </summary>
         [JsonProperty] public EventId Id { get; private set; } = EventId.Generate();
 
         /// <summary>
-        ///     The original event as created by the event raiser.
-        ///     <para/>
-        ///     Modifying this event is not recommended.
+        /// The original event as created by the event raiser.
+        /// <para/>
+        /// Modifying this event is not recommended.
         /// </summary>
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public GameEvent<TGameState> OriginalEvent { get; private set; }
 
         /// <summary>
-        ///     The event that will be applied after the OnEventConfirmed phase.
-        ///     <para/>
-        ///     Modifying this event is allowed.
+        /// The event that will be applied after the OnEventConfirmed phase.
+        /// <para/>
+        /// Modifying this event is allowed.
         /// </summary>
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
         public GameEvent<TGameState> Event { get; private set; }
 
         /// <summary>
-        ///     The path of this <see cref="GameEventNode{TState}"/> in the event tree.
+        /// The path of this <see cref="GameEventNode{TState}"/> in the event tree.
         /// </summary>
         [JsonProperty] public List<int> Path { get; private set; }
 
         /// <summary>
-        ///     The events raised by this event being applied or in response to this event.
-        ///     <para/>
-        ///     In other words, child events are events caused by this event.
+        /// The events raised by this event being applied or in response to this event.
+        /// <para/>
+        /// In other words, child events are events caused by this event.
         /// </summary>
         [JsonProperty] public List<GameEventNode<TGameState>> Children { get; private set; } = new();
 
         /// <summary>
-        ///     A locked event can no longer be prevented.
+        /// A locked event can no longer be prevented.
         /// </summary>
         [JsonProperty] public bool IsLocked { get; private set; }
 
         [JsonIgnore] public TGameState ExpectedDebugState { get; set; }
 
         /// <summary>
-        ///     Prevent an event from being applied.
-        ///     <para/>
-        ///     An event can only be prevented during the OnEventRaised phase.
-        ///     Additionally, an event can only be prevented once.
+        /// Prevent an event from being applied.
+        /// <para/>
+        /// An event can only be prevented during the OnEventRaised phase.
+        /// Additionally, an event can only be prevented once.
         /// </summary>
         public void Prevent()
         {
@@ -81,7 +81,7 @@ namespace CodeName.EventSystem
         }
 
         /// <summary>
-        ///     Called by <see cref="GameStateTracker{TGameState}"/> after the OnEventRaised event.
+        /// Called by <see cref="GameStateTracker{TGameState}"/> after the OnEventRaised event.
         /// </summary>
         public void Lock()
         {
