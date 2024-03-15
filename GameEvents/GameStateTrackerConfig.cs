@@ -5,6 +5,7 @@ namespace CodeName.EventSystem.GameEvents
     public class GameStateTrackerConfig<TGameState>
     {
         public bool IsDebugMode { get; set; } = false;
+        public bool CloneState { get; set; } = true;
         public ISerializer Serializer { get; set; }
         public List<IGameEventHandler<TGameState>> GameEventHandlers { get; set; }
 
@@ -13,6 +14,7 @@ namespace CodeName.EventSystem.GameEvents
             return new GameStateTrackerConfig<TGameState>
             {
                 IsDebugMode = IsDebugMode,
+                CloneState = CloneState,
                 Serializer = Serializer,
                 GameEventHandlers = GameEventHandlers,
             };

@@ -10,8 +10,16 @@ namespace CodeName.EventSystem
             Config = config;
             Events = new GameEventTracker<TGameState>(config.Serializer);
 
-            OriginalState = config.Serializer.Clone(state);
-            State = config.Serializer.Clone(state);
+            if (config.CloneState)
+            {
+                OriginalState = config.Serializer.Clone(state);
+                State = config.Serializer.Clone(state);
+            }
+            else
+            {
+                OriginalState = state;
+                State = state;
+            }
         }
 
         public GameStateTrackerConfig<TGameState> Config { get; }
