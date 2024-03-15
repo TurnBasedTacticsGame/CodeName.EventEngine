@@ -2,9 +2,16 @@ using CodeName.EventSystem.Tasks;
 
 namespace CodeName.EventSystem.GameEvents
 {
-    public class GenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
+    public class ConstGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
-        public GenerativeGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config) : base(state, config) {}
+        public ConstGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config) : base(state, config, false)
+        {
+            Config = config;
+            Events = new GameEventTracker<TGameState>(config.Serializer);
+
+            OriginalState = state;
+            State = state;
+        }
 
         public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
@@ -15,18 +22,8 @@ namespace CodeName.EventSystem.GameEvents
                 await OnEventConfirmed(currentNode);
                 await currentNode.Event.Apply(this);
                 await OnEventApplied(currentNode);
-
-                StoreDebugExpectedState(currentNode);
             }
             Events.Pop();
-        }
-
-        private void StoreDebugExpectedState(GameEventNode<TGameState> currentNode)
-        {
-            if (Config.IsDebugMode)
-            {
-                currentNode.ExpectedDebugState = Config.Serializer.Clone(State);
-            }
         }
     }
 }

@@ -5,25 +5,16 @@ namespace CodeName.EventSystem
 {
     public abstract class GameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
-        protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)
+        protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config, bool initialize = true)
         {
-            Config = config;
-            Events = new GameEventTracker<TGameState>(config.Serializer);
-
-            if (config.CloneState)
+            if (initialize)
             {
-                OriginalState = config.Serializer.Clone(state);
-                State = config.Serializer.Clone(state);
-            }
-            else
-            {
-                OriginalState = state;
-                State = state;
+                Initialize(state, config);
             }
         }
 
-        public GameStateTrackerConfig<TGameState> Config { get; }
-        public GameEventTracker<TGameState> Events { get; }
+        public GameStateTrackerConfig<TGameState> Config { get; protected set; }
+        public GameEventTracker<TGameState> Events { get; protected set; }
 
         public TGameState OriginalState { get; protected set; }
         public TGameState State { get; protected set; }
@@ -39,6 +30,23 @@ namespace CodeName.EventSystem
         ///     3. OnEventApplied - Use to react to events after they are applied.
         /// </summary>
         public abstract StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
+
+        protected void Initialize(TGameState state, GameStateTrackerConfig<TGameState> config)
+        {
+            Config = config;
+            Events = new GameEventTracker<TGameState>(config.Serializer);
+
+            if (config.CloneState)
+            {
+                OriginalState = config.Serializer.Clone(state);
+                State = config.Serializer.Clone(state);
+            }
+            else
+            {
+                OriginalState = state;
+                State = state;
+            }
+        }
 
         protected virtual async StateTask OnEventRaised(GameEventNode<TGameState> node)
         {
