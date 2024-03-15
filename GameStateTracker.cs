@@ -3,7 +3,7 @@ using CodeName.EventSystem.Tasks;
 
 namespace CodeName.EventSystem
 {
-    public abstract class GameStateTracker<TGameState>
+    public abstract class GameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
         protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)
         {
