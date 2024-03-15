@@ -14,7 +14,7 @@ namespace CodeName.EventSystem.GameEvents.Matching
             }
 
             var path = context.Node.Path;
-            var currentNode = context.Tracker.Events.Tree;
+            var currentNode = context.Tracker.Tree;
 
             for (var i = 0; i < path.Count; i++)
             {

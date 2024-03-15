@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
 
@@ -15,6 +16,25 @@ namespace CodeName.EventSystem
 
         public GameStateTrackerConfig<TGameState> Config { get; protected set; }
         public GameEventTracker<TGameState> Events { get; protected set; }
+
+        public virtual GameEventNode<TGameState> Tree => Events.Tree;
+        public virtual List<GameEventNode<TGameState>> List => Events.List;
+        public virtual List<int> PathToCurrentNode => Events.PathToCurrentNode;
+
+        public GameEventNode<TGameState> CurrentNode
+        {
+            get
+            {
+                var current = Tree;
+
+                foreach (var index in PathToCurrentNode)
+                {
+                    current = current.Children[index];
+                }
+
+                return current;
+            }
+        }
 
         public TGameState OriginalState { get; protected set; }
         public TGameState State { get; protected set; }
