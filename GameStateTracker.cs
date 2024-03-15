@@ -5,18 +5,16 @@ namespace CodeName.EventSystem
 {
     public abstract class GameStateTracker<TGameState>
     {
-        private readonly GameStateTrackerConfig<TGameState> config;
-
         protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)
         {
-            this.config = config;
-
+            Config = config;
             Events = new GameEventTracker<TGameState>(config.Serializer);
 
             OriginalState = config.Serializer.Clone(state);
             State = config.Serializer.Clone(state);
         }
 
+        public GameStateTrackerConfig<TGameState> Config { get; }
         public GameEventTracker<TGameState> Events { get; }
 
         public TGameState OriginalState { get; protected set; }
@@ -36,7 +34,7 @@ namespace CodeName.EventSystem
 
         protected virtual async StateTask OnEventRaised(GameEventNode<TGameState> node)
         {
-            foreach (var gameEventHandler in config.GameEventHandlers)
+            foreach (var gameEventHandler in Config.GameEventHandlers)
             {
                 await gameEventHandler.OnEventRaised(this, node);
             }
@@ -44,7 +42,7 @@ namespace CodeName.EventSystem
 
         protected virtual async StateTask OnEventConfirmed(GameEventNode<TGameState> node)
         {
-            foreach (var gameEventHandler in config.GameEventHandlers)
+            foreach (var gameEventHandler in Config.GameEventHandlers)
             {
                 await gameEventHandler.OnEventConfirmed(this, node);
             }
@@ -52,7 +50,7 @@ namespace CodeName.EventSystem
 
         protected virtual async StateTask OnEventApplied(GameEventNode<TGameState> node)
         {
-            foreach (var gameEventHandler in config.GameEventHandlers)
+            foreach (var gameEventHandler in Config.GameEventHandlers)
             {
                 await gameEventHandler.OnEventApplied(this, node);
             }
