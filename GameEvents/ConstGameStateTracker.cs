@@ -5,14 +5,7 @@ namespace CodeName.EventSystem.GameEvents
 {
     public class ConstGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
-        public ConstGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config) : base(state, UseNullOpSerializer(config))
-        {
-            Config = config;
-            Events = new GameEventTracker<TGameState>(config.Serializer);
-
-            OriginalState = state;
-            State = state;
-        }
+        public ConstGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config) : base(state, UseNullOpSerializer(config)) {}
 
         public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
