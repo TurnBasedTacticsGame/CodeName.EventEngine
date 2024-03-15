@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CodeName.EventSystem.GameEvents;
+using CodeName.Serialization;
 using Newtonsoft.Json;
 
 namespace CodeName.EventSystem

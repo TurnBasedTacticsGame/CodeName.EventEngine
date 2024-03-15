@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CodeName.Serialization;
 
 namespace CodeName.EventSystem.GameEvents
 {

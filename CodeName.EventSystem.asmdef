@@ -2,6 +2,7 @@
     "name": "CodeName.EventSystem",
     "rootNamespace": "",
     "references": [
+        "CodeName.Serialization",
         "Exanite.Core"
     ],
     "includePlatforms": [],
