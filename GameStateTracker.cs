@@ -5,12 +5,13 @@ namespace CodeName.EventSystem
 {
     public abstract class GameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
-        protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config, bool initialize = true)
+        protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)
         {
-            if (initialize)
-            {
-                Initialize(state, config);
-            }
+            Config = config;
+            Events = new GameEventTracker<TGameState>(config.Serializer);
+
+            OriginalState = config.Serializer.Clone(state);
+            State = config.Serializer.Clone(state);
         }
 
         public GameStateTrackerConfig<TGameState> Config { get; protected set; }
@@ -30,23 +31,6 @@ namespace CodeName.EventSystem
         ///     3. OnEventApplied - Use to react to events after they are applied.
         /// </summary>
         public abstract StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
-
-        protected void Initialize(TGameState state, GameStateTrackerConfig<TGameState> config)
-        {
-            Config = config;
-            Events = new GameEventTracker<TGameState>(config.Serializer);
-
-            if (config.CloneState)
-            {
-                OriginalState = config.Serializer.Clone(state);
-                State = config.Serializer.Clone(state);
-            }
-            else
-            {
-                OriginalState = state;
-                State = state;
-            }
-        }
 
         protected virtual async StateTask OnEventRaised(GameEventNode<TGameState> node)
         {
