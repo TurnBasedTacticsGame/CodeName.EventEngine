@@ -8,7 +8,7 @@ namespace CodeName.EventSystem.GameEvents.Matching
             Node = null;
             Event = null;
 
-            var node = context.CurrentNode;
+            var node = context.Events.CurrentNode;
             if (node.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TGameState>(Tracker, node, gameEvent)) ?? true))
             {
                 Node = node;
