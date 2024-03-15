@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace CodeName.EventSystem.GameEvents
@@ -42,6 +43,7 @@ namespace CodeName.EventSystem.GameEvents
         }
 
         public GameEventNode<TGameState> Tree { get; }
+        [Obsolete]
         public List<GameEventNode<TGameState>> List { get; }
         public List<int> PathToCurrentNode { get; }
 
