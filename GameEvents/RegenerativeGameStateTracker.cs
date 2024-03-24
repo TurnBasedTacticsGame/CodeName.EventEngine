@@ -38,6 +38,14 @@ namespace CodeName.EventSystem.GameEvents
             return new StateTask(queuedEvent.CompletionSource);
         }
 
+        public void RunToEnd()
+        {
+            while (TryReplayNextEventNode(out _, out var apply))
+            {
+                apply();
+            }
+        }
+
         public bool TryReplayNextEventNode(out GameEventNode<TGameState> node, out Action apply)
         {
             if (currentNodeIndex == 0)
