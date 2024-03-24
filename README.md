@@ -109,7 +109,7 @@ await tracker.ApplyEvent(new DamageTakenEvent(unit.Id, Random.Range(0, 10)));
     - Track whether a unit is dodging or not. Match on Unit Attacked and check whether the unit is also dodging.
     - In general, track when the event(s) last happened and check that data instead of getting it from the event log.
 
-### GameStateTracker.OriginalState removal
+### IGameStateTracker.OriginalState removal
 
 - Access to OriginalState will be removed
   - Recommended migration:
