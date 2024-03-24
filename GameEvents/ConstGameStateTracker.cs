@@ -1,5 +1,6 @@
 using System;
 using CodeName.EventSystem.Tasks;
+using CodeName.Serialization;
 
 namespace CodeName.EventSystem.GameEvents
 {
