@@ -41,17 +41,14 @@ Contrary to their name, the events themselves CAN be modified, but the GameState
 
 ### When are events required?
 
-- Non-deterministic code (run RNG, then save RNG result to event, don't use RNG result directly)
-  - Events are used to snapshot the randomly generated value so that the same value can be used when replaying the event log.
+- Non-deterministic code. This is supported, but must be done in a specific way. See [common desync issues](#common-desync-issues).
 - When event handlers need to react to events that are happening.
 
 ### Accessing event results in event handlers
 
-- Accessing GameState after applying GameEvent
-  - This is supported.
+- Accessing GameState after applying GameEvent IS supported.
 
-- Accessing GameEvent after applying the GameEvent
-  - This is NOT supported.
+- Accessing GameEvent after applying the GameEvent is NOT supported.
   - This is enforced by GenerativeGameStateTracker and RegenerativeGameStateTracker.
 
 ```cs
@@ -65,11 +62,11 @@ await tracker.ApplyEvent(gameEvent);
 
 ### Common desync issues
 
-- Duplicated entities -> Fix by using entity ids instead.
+- Duplicated entities -> Fix by using entity IDs instead.
   - Serialized entities are duplicated and assigned a new ID
-- Incorrect non-deterministic code. See previous FAQ.
+- Incorrect non-deterministic code (RNG). Save non-deterministic results to event log.
 
-Duplicated entities.
+Duplicated entities:
 ```cs
 // Incorrect - Unit will be duplicated in event log
 await tracker.ApplyEvent(new DamageTakenEvent(unit));
@@ -78,6 +75,7 @@ await tracker.ApplyEvent(new DamageTakenEvent(unit));
 await tracker.ApplyEvent(new DamageTakenEvent(unit.Id));
 ```
 
+Non-deterministic code:
 ```cs
 // Incorrect - RNG not saved to event log
 unit.Health -= Random.Range(0, 10);
