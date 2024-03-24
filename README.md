@@ -62,9 +62,9 @@ await tracker.ApplyEvent(gameEvent);
 
 ### Common desync issues
 
-- Duplicated entities -> Fix by using entity IDs instead.
+- Duplicated entities -> Use entity IDs instead.
   - Serialized entities are duplicated and assigned a new ID
-- Incorrect non-deterministic code (RNG). Save non-deterministic results to event log.
+- Incorrect non-deterministic code (RNG) -> Save non-deterministic results to event log.
 
 Duplicated entities:
 ```cs
