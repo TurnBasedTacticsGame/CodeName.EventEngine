@@ -60,7 +60,7 @@ var gameEvent = new GameEvent();
 await tracker.ApplyEvent(gameEvent);
 
 // tracker.State will be updated
-// gameEvent will be defensively copied (in debug mode) and not contain any changes made to the event
+// gameEvent will be defensively copied and not contain any changes made to the event
 ```
 
 ### Common desync issues
