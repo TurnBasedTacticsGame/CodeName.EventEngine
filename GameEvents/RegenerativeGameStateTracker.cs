@@ -6,7 +6,6 @@ namespace CodeName.EventSystem.GameEvents
 {
     public class RegenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
     {
-        private int currentNodeIndex;
         private readonly List<QueuedEvent> queuedEvents = new();
 
         private readonly GameStateTrackerConfig<TGameState> config;
@@ -42,9 +41,7 @@ namespace CodeName.EventSystem.GameEvents
             // Skip root node --> i = 1
             for (var i = 1; i < original.List.Count; i++)
             {
-                var originalNode = original.List[currentNodeIndex];
-                currentNodeIndex++;
-
+                var originalNode = original.List[i];
                 PopToMatchingLevel(originalNode);
 
                 var currentNode = Events.Push(State, originalNode.OriginalEvent);
