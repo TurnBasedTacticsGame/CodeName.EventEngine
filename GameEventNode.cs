@@ -59,7 +59,7 @@ namespace CodeName.EventSystem
         [JsonProperty] public bool IsLocked { get; private set; }
 
         /// <summary>
-        /// Expected game state. Usually used for debugging purposes.
+        /// Expected game state after the event is applied. Usually used for debugging purposes.
         /// </summary>
         [JsonIgnore] public TGameState ExpectedState { get; set; }
 
