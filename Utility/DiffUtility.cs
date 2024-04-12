@@ -19,7 +19,7 @@ namespace CodeName.EventSystem.Utility
 
         public static bool ValidateGameState<TGameState>(ISerializer serializer, TGameState current, GameEventNode<TGameState> node)
         {
-            var expected = node.ExpectedDebugState;
+            var expected = node.ExpectedState;
 
             if (HasDifferences(serializer, current, expected, out var currentJson, out var expectedJson))
             {

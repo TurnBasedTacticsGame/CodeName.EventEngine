@@ -73,7 +73,7 @@ namespace CodeName.EventSystem.GameEvents
             PopToMatchingLevel(originalNode);
 
             var currentNode = Events.Push(State, originalNode.OriginalEvent);
-            currentNode.ExpectedDebugState = originalNode.ExpectedDebugState;
+            currentNode.ExpectedState = originalNode.ExpectedState;
 
             node = currentNode;
             apply = () =>
@@ -92,11 +92,11 @@ namespace CodeName.EventSystem.GameEvents
             await node.Event.Apply(this);
             await OnEventApplied(node);
 
-            var shouldValidate = config.IsDebugMode && node.ExpectedDebugState != null;
+            var shouldValidate = config.IsDebugMode && node.ExpectedState != null;
             if (shouldValidate && !DiffUtility.ValidateGameState(config.Serializer, State, node))
             {
                 // State has de-synced, re-sync by replacing current state with expected.
-                State = config.Serializer.Clone(node.ExpectedDebugState);
+                State = config.Serializer.Clone(node.ExpectedState);
             }
         }
 

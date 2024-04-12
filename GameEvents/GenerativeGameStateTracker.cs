@@ -16,16 +16,16 @@ namespace CodeName.EventSystem.GameEvents
                 await currentNode.Event.Apply(this);
                 await OnEventApplied(currentNode);
 
-                StoreDebugExpectedState(currentNode);
+                StoreExpectedState(currentNode);
             }
             Events.Pop();
         }
 
-        private void StoreDebugExpectedState(GameEventNode<TGameState> currentNode)
+        private void StoreExpectedState(GameEventNode<TGameState> currentNode)
         {
             if (Config.IsDebugMode)
             {
-                currentNode.ExpectedDebugState = Config.Serializer.Clone(State);
+                currentNode.ExpectedState = Config.Serializer.Clone(State);
             }
         }
     }
