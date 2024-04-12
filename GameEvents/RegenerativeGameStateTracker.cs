@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
+using Exanite.Core.Utilities;
 
 namespace CodeName.EventSystem.GameEvents
 {
@@ -38,6 +39,8 @@ namespace CodeName.EventSystem.GameEvents
 
         public async StateTask ReplayToEnd()
         {
+            var tasks = new List<(StateTask, GameEventNode<TGameState>)>();
+
             // Skip root node --> i = 1
             for (var i = 1; i < original.List.Count; i++)
             {
@@ -47,12 +50,26 @@ namespace CodeName.EventSystem.GameEvents
                 var currentNode = Events.Push(State, originalNode.OriginalEvent);
                 currentNode.ExpectedState = originalNode.ExpectedState;
 
-                await ReplayNode(currentNode);
+                tasks.Add((ReplayNode(currentNode), currentNode));
             }
 
             while (Events.PathToCurrentNode.Count != 0)
             {
                 PopCurrentEventNode();
+            }
+
+            // Todo Verify that this behavior (and the similar implementation in PopCurrentEventNode) is correct
+            while (queuedEvents.Count > 0)
+            {
+                var queuedEvent = queuedEvents[queuedEvents.Count - 1];
+
+                queuedEvents.RemoveAt(queuedEvents.Count - 1);
+                queuedEvent.CompletionSource.Complete();
+            }
+
+            foreach (var task in tasks)
+            {
+                await task.Item1;
             }
         }
 
