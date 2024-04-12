@@ -7,7 +7,7 @@ namespace CodeName.EventSystem.Tasks
         public bool IsCompleted { get; private set; }
         public Exception Exception { get; set; }
 
-        public Action Continuation { get; set; }
+        public event Action Continuation;
 
         public void Complete()
         {

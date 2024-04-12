@@ -42,7 +42,7 @@ namespace CodeName.EventSystem.Tasks
                 return;
             }
 
-            source.Continuation = continuation;
+            source.Continuation += continuation;
         }
     }
 
@@ -86,7 +86,7 @@ namespace CodeName.EventSystem.Tasks
                 return;
             }
 
-            source.Continuation = continuation;
+            source.Continuation += continuation;
         }
     }
 }
