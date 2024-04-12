@@ -39,24 +39,9 @@ namespace CodeName.EventSystem.GameEvents
 
         public async StateTask ReplayToEnd()
         {
-            while (true)
+            // Skip root node --> i = 1
+            for (var i = 1; i < original.List.Count; i++)
             {
-                if (currentNodeIndex == 0)
-                {
-                    // Skip root node
-                    currentNodeIndex++;
-                }
-
-                if (currentNodeIndex >= original.List.Count)
-                {
-                    while (Events.PathToCurrentNode.Count != 0)
-                    {
-                        PopCurrentEventNode();
-                    }
-
-                    break;
-                }
-
                 var originalNode = original.List[currentNodeIndex];
                 currentNodeIndex++;
 
@@ -66,6 +51,11 @@ namespace CodeName.EventSystem.GameEvents
                 currentNode.ExpectedState = originalNode.ExpectedState;
 
                 await ReplayNode(currentNode);
+            }
+
+            while (Events.PathToCurrentNode.Count != 0)
+            {
+                PopCurrentEventNode();
             }
         }
 
