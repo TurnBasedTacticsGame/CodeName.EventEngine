@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
