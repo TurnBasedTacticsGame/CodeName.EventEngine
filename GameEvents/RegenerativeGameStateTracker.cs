@@ -40,45 +40,34 @@ namespace CodeName.EventSystem.GameEvents
 
         public async StateTask ReplayToEnd()
         {
-            while (TryReplayNextEventNode(out _, out var apply))
+            while (true)
             {
-                await apply();
-            }
-        }
-
-        public bool TryReplayNextEventNode(out GameEventNode<TGameState> node, out Func<StateTask> apply)
-        {
-            if (currentNodeIndex == 0)
-            {
-                // Skip root node
-                currentNodeIndex++;
-            }
-
-            if (currentNodeIndex >= original.List.Count)
-            {
-                while (Events.PathToCurrentNode.Count != 0)
+                if (currentNodeIndex == 0)
                 {
-                    PopCurrentEventNode();
+                    // Skip root node
+                    currentNodeIndex++;
                 }
 
-                node = null;
-                apply = null;
+                if (currentNodeIndex >= original.List.Count)
+                {
+                    while (Events.PathToCurrentNode.Count != 0)
+                    {
+                        PopCurrentEventNode();
+                    }
 
-                return false;
+                    break;
+                }
+
+                var originalNode = original.List[currentNodeIndex];
+                currentNodeIndex++;
+
+                PopToMatchingLevel(originalNode);
+
+                var currentNode = Events.Push(State, originalNode.OriginalEvent);
+                currentNode.ExpectedState = originalNode.ExpectedState;
+
+                await ReplayNode(currentNode);
             }
-
-            var originalNode = original.List[currentNodeIndex];
-            currentNodeIndex++;
-
-            PopToMatchingLevel(originalNode);
-
-            var currentNode = Events.Push(State, originalNode.OriginalEvent);
-            currentNode.ExpectedState = originalNode.ExpectedState;
-
-            node = currentNode;
-            apply = () => ReplayNode(currentNode);
-
-            return true;
         }
 
         private async StateTask ReplayNode(GameEventNode<TGameState> node)
