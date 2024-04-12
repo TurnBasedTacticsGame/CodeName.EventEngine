@@ -38,15 +38,15 @@ namespace CodeName.EventSystem.GameEvents
             return new StateTask(queuedEvent.CompletionSource);
         }
 
-        public void RunToEnd()
+        public async StateTask ReplayToEnd()
         {
             while (TryReplayNextEventNode(out _, out var apply))
             {
-                apply();
+                await apply();
             }
         }
 
-        public bool TryReplayNextEventNode(out GameEventNode<TGameState> node, out Action apply)
+        public bool TryReplayNextEventNode(out GameEventNode<TGameState> node, out Func<StateTask> apply)
         {
             if (currentNodeIndex == 0)
             {
@@ -76,10 +76,7 @@ namespace CodeName.EventSystem.GameEvents
             currentNode.ExpectedState = originalNode.ExpectedState;
 
             node = currentNode;
-            apply = () =>
-            {
-                ReplayNode(currentNode).Forget();
-            };
+            apply = () => ReplayNode(currentNode);
 
             return true;
         }
