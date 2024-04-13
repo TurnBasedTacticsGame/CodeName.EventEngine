@@ -42,7 +42,7 @@ namespace CodeName.EventSystem.GameEvents
             for (var i = 1; i < originalTracker.List.Count; i++)
             {
                 var originalNode = originalTracker.List[i];
-                while (Events.PathToCurrentNode.Count != 0 && !IsParentPath(originalNode.Path, Events.PathToCurrentNode))
+                while (IsParentPath(originalNode.Path, Events.PathToCurrentNode))
                 {
                     PopCurrentNode();
                 }
