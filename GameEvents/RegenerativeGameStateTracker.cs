@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
 using UnityEngine.Assertions;
@@ -30,7 +29,6 @@ namespace CodeName.EventSystem.GameEvents
             var queuedEvent = new RaisedEvent
             {
                 ParentId = Events.CurrentNode.Id,
-                ParentPath = new List<int>(Events.PathToCurrentNode),
                 CompletionSource = new StateTaskCompletionSource(),
                 Event = gameEvent,
             };
@@ -74,7 +72,6 @@ namespace CodeName.EventSystem.GameEvents
                 replayedEvents.Add(new ReplayedEvent
                 {
                     Id = Events.CurrentNode.Id,
-                    Path = Events.PathToCurrentNode.ToList(),
                     Task = task,
                 });
             }
@@ -97,7 +94,7 @@ namespace CodeName.EventSystem.GameEvents
             for (var i = raisedEvents.Count - 1; i >= 0; i--)
             {
                 var raisedEvent = raisedEvents[i];
-                if (IsSamePath(Events.PathToCurrentNode, raisedEvent.ParentPath))
+                if (Events.CurrentNode.Id == raisedEvent.ParentId)
                 {
                     raisedEvents.RemoveAt(raisedEvents.Count - 1);
                     raisedRemoved.Add(raisedEvent);
@@ -113,50 +110,9 @@ namespace CodeName.EventSystem.GameEvents
             await replayedEvent.Task;
         }
 
-        private bool IsSamePath(List<int> a, List<int> b)
-        {
-            if (a.Count != b.Count)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < a.Count; i++)
-            {
-                if (a[i] != b[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool IsParentPath(List<int> parent, List<int> path)
-        {
-            if (parent.Count >= path.Count)
-            {
-                return false;
-            }
-
-            for (var i = 0; i < parent.Count - 1; i++)
-            {
-                if (parent[i] != path[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         private struct RaisedEvent
         {
             public EventId ParentId { get; set; }
-
-            /// <summary>
-            /// The path to the current node when the event was raised. This is the path to the parent, not the raised event.
-            /// </summary>
-            public List<int> ParentPath { get; set; }
             public StateTaskCompletionSource CompletionSource { get; set; }
             public GameEvent<TGameState> Event { get; set; }
         }
@@ -164,11 +120,6 @@ namespace CodeName.EventSystem.GameEvents
         private struct ReplayedEvent
         {
             public EventId Id { get; set; }
-
-            /// <summary>
-            /// The path of the replayed event.
-            /// </summary>
-            public List<int> Path { get; set; }
             public StateTask Task { get; set; }
         }
     }
