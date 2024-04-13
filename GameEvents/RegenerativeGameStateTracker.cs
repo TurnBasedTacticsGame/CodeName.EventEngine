@@ -24,18 +24,16 @@ namespace CodeName.EventSystem.GameEvents
 
         public override StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
-            // Save current event path
-            // When a GameEventNode is popped, all queued events with a matching path will be completed
-            var queuedEvent = new RaisedEvent
+            var raisedEvent = new RaisedEvent
             {
                 ParentId = Events.CurrentNode.Id,
                 CompletionSource = new StateTaskCompletionSource(),
                 Event = gameEvent,
             };
 
-            raisedEvents.Add(queuedEvent);
+            raisedEvents.Add(raisedEvent);
 
-            return new StateTask(queuedEvent.CompletionSource);
+            return new StateTask(raisedEvent.CompletionSource);
         }
 
         private async StateTask ReplayNode(GameEventNode<TGameState> node)
