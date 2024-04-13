@@ -117,12 +117,12 @@ namespace CodeName.EventSystem.GameEvents
 
         private bool IsParentPath(List<int> parent, List<int> path)
         {
-            if (parent.Count < path.Count)
+            if (parent.Count > path.Count)
             {
                 return false;
             }
 
-            for (var i = 0; i < path.Count - 1; i++)
+            for (var i = 0; i < parent.Count - 1; i++)
             {
                 if (parent[i] != path[i])
                 {
