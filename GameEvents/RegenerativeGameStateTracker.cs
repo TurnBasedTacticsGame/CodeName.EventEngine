@@ -27,7 +27,7 @@ namespace CodeName.EventSystem.GameEvents
             // When a GameEventNode is popped, all queued events with a matching path will be completed
             var queuedEvent = new QueuedEvent
             {
-                PathAddedDuring = new List<int>(Events.PathToCurrentNode),
+                PathRaisedDuring = new List<int>(Events.PathToCurrentNode),
                 CompletionSource = new StateTaskCompletionSource(),
             };
 
@@ -42,17 +42,20 @@ namespace CodeName.EventSystem.GameEvents
             for (var i = 1; i < originalTracker.List.Count; i++)
             {
                 var originalNode = originalTracker.List[i];
-                PopToMatchingLevel(originalNode);
+                while (Events.PathToCurrentNode.Count != 0 && !IsParentPath(originalNode.Path, Events.PathToCurrentNode))
+                {
+                    PopCurrentNode();
+                }
 
                 var currentNode = Events.Push(State, originalNode.OriginalEvent);
                 currentNode.ExpectedState = originalNode.ExpectedState;
 
-                await ReplayNode(currentNode);
+                var task = ReplayNode(currentNode); // While no pop don't await, await when popping?
             }
 
             while (Events.PathToCurrentNode.Count != 0)
             {
-                PopCurrentEventNode();
+                PopCurrentNode();
             }
 
             Assert.AreEqual(0, queuedEvents.Count);
@@ -74,15 +77,7 @@ namespace CodeName.EventSystem.GameEvents
             }
         }
 
-        private void PopToMatchingLevel(GameEventNode<TGameState> originalNode)
-        {
-            while (!IsMatchingLevel(originalNode) && Events.PathToCurrentNode.Count != 0)
-            {
-                PopCurrentEventNode();
-            }
-        }
-
-        private void PopCurrentEventNode()
+        private void PopCurrentNode()
         {
             Events.Pop();
             CompleteCompletedEvents();
@@ -90,29 +85,11 @@ namespace CodeName.EventSystem.GameEvents
 
         private void CompleteCompletedEvents()
         {
-            static bool IsSamePath(List<int> a, List<int> b)
-            {
-                if (a.Count != b.Count)
-                {
-                    return false;
-                }
-
-                for (var i = 0; i < a.Count; i++)
-                {
-                    if (a[i] != b[i])
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
             for (var i = queuedEvents.Count - 1; i >= 0; i--)
             {
                 var queuedEvent = queuedEvents[i];
 
-                if (IsSamePath(queuedEvent.PathAddedDuring, Events.PathToCurrentNode))
+                if (IsSamePath(queuedEvent.PathRaisedDuring, Events.PathToCurrentNode))
                 {
                     queuedEvents.RemoveAt(queuedEvents.Count - 1);
                     queuedEvent.CompletionSource.Complete();
@@ -120,19 +97,34 @@ namespace CodeName.EventSystem.GameEvents
             }
         }
 
-        /// <summary>
-        /// Technically matching level - 1. A level is matching when pushing a new node will cause the new node to have the same path as the original node.
-        /// </summary>
-        private bool IsMatchingLevel(GameEventNode<TGameState> originalNode)
+        private bool IsSamePath(List<int> a, List<int> b)
         {
-            if (Events.PathToCurrentNode.Count != originalNode.Path.Count - 1)
+            if (a.Count != b.Count)
             {
                 return false;
             }
 
-            for (var i = 0; i < originalNode.Path.Count - 1; i++)
+            for (var i = 0; i < a.Count; i++)
             {
-                if (originalNode.Path[i] != Events.PathToCurrentNode[i])
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool IsParentPath(List<int> parent, List<int> path)
+        {
+            if (parent.Count < path.Count)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < path.Count - 1; i++)
+            {
+                if (parent[i] != path[i])
                 {
                     return false;
                 }
@@ -143,7 +135,7 @@ namespace CodeName.EventSystem.GameEvents
 
         private struct QueuedEvent
         {
-            public List<int> PathAddedDuring { get; set; }
+            public List<int> PathRaisedDuring { get; set; }
             public StateTaskCompletionSource CompletionSource { get; set; }
         }
     }
