@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
+using UnityEngine.Assertions;
 
 namespace CodeName.EventSystem.GameEvents
 {
@@ -26,7 +27,7 @@ namespace CodeName.EventSystem.GameEvents
             // When a GameEventNode is popped, all queued events with a matching path will be completed
             var queuedEvent = new QueuedEvent
             {
-                Path = new List<int>(Events.PathToCurrentNode),
+                PathAddedDuring = new List<int>(Events.PathToCurrentNode),
                 CompletionSource = new StateTaskCompletionSource(),
             };
 
@@ -37,8 +38,6 @@ namespace CodeName.EventSystem.GameEvents
 
         public async StateTask ReplayToEnd()
         {
-            var tasks = new List<(StateTask, GameEventNode<TGameState>)>();
-
             // Skip root node --> i = 1
             for (var i = 1; i < originalTracker.List.Count; i++)
             {
@@ -48,7 +47,7 @@ namespace CodeName.EventSystem.GameEvents
                 var currentNode = Events.Push(State, originalNode.OriginalEvent);
                 currentNode.ExpectedState = originalNode.ExpectedState;
 
-                tasks.Add((ReplayNode(currentNode), currentNode));
+                await ReplayNode(currentNode);
             }
 
             while (Events.PathToCurrentNode.Count != 0)
@@ -56,19 +55,7 @@ namespace CodeName.EventSystem.GameEvents
                 PopCurrentEventNode();
             }
 
-            // Todo Verify that this behavior (and the similar implementation in PopCurrentEventNode) is correct
-            while (queuedEvents.Count > 0)
-            {
-                var queuedEvent = queuedEvents[queuedEvents.Count - 1];
-
-                queuedEvents.RemoveAt(queuedEvents.Count - 1);
-                queuedEvent.CompletionSource.Complete();
-            }
-
-            foreach (var task in tasks)
-            {
-                await task.Item1;
-            }
+            Assert.AreEqual(0, queuedEvents.Count);
         }
 
         private async StateTask ReplayNode(GameEventNode<TGameState> node)
@@ -103,7 +90,7 @@ namespace CodeName.EventSystem.GameEvents
 
         private void CompleteCompletedEvents()
         {
-            bool IsMatchingPath(List<int> a, List<int> b)
+            static bool IsSamePath(List<int> a, List<int> b)
             {
                 if (a.Count != b.Count)
                 {
@@ -125,7 +112,7 @@ namespace CodeName.EventSystem.GameEvents
             {
                 var queuedEvent = queuedEvents[i];
 
-                if (IsMatchingPath(queuedEvent.Path, Events.PathToCurrentNode))
+                if (IsSamePath(queuedEvent.PathAddedDuring, Events.PathToCurrentNode))
                 {
                     queuedEvents.RemoveAt(queuedEvents.Count - 1);
                     queuedEvent.CompletionSource.Complete();
@@ -156,7 +143,7 @@ namespace CodeName.EventSystem.GameEvents
 
         private struct QueuedEvent
         {
-            public List<int> Path { get; set; }
+            public List<int> PathAddedDuring { get; set; }
             public StateTaskCompletionSource CompletionSource { get; set; }
         }
     }
