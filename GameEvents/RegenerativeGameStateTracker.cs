@@ -68,7 +68,7 @@ namespace CodeName.EventSystem.GameEvents
                 var currentNode = Events.Push(State, originalNode.OriginalEvent);
                 currentNode.ExpectedState = originalNode.ExpectedState;
 
-                var task = ReplayNode(currentNode); // While no pop don't await, await when popping?
+                var task = ReplayNode(currentNode);
                 replayedEvents.Add(new ReplayedEvent
                 {
                     Id = Events.CurrentNode.Id,
