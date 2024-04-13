@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
-using Exanite.Core.Utilities;
 
 namespace CodeName.EventSystem.GameEvents
 {
@@ -10,8 +9,7 @@ namespace CodeName.EventSystem.GameEvents
         private readonly List<QueuedEvent> queuedEvents = new();
 
         private readonly GameStateTrackerConfig<TGameState> config;
-
-        private readonly GameEventTracker<TGameState> original;
+        private readonly GameEventTracker<TGameState> originalTracker;
 
         public RegenerativeGameStateTracker(
             TGameState state,
@@ -19,7 +17,7 @@ namespace CodeName.EventSystem.GameEvents
             GameStateTrackerConfig<TGameState> config) : base(state, config)
         {
             this.config = config;
-            original = tracker;
+            originalTracker = tracker;
         }
 
         public override StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
@@ -42,9 +40,9 @@ namespace CodeName.EventSystem.GameEvents
             var tasks = new List<(StateTask, GameEventNode<TGameState>)>();
 
             // Skip root node --> i = 1
-            for (var i = 1; i < original.List.Count; i++)
+            for (var i = 1; i < originalTracker.List.Count; i++)
             {
-                var originalNode = original.List[i];
+                var originalNode = originalTracker.List[i];
                 PopToMatchingLevel(originalNode);
 
                 var currentNode = Events.Push(State, originalNode.OriginalEvent);
