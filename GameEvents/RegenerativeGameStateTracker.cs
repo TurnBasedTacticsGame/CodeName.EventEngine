@@ -26,6 +26,8 @@ namespace CodeName.EventSystem.GameEvents
 
         public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
+            // * Needs more analysis
+            // This will break when more/less/different events are created on the server compared to the client
             await ReplayNextNode();
         }
 
