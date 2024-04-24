@@ -12,8 +12,9 @@ namespace CodeName.EventSystem
         [JsonConstructor]
         private GameEventNode() {}
 
-        public GameEventNode(GameEvent<TGameState> gameEvent, List<int> path, ISerializer serializer)
+        public GameEventNode(GameEvent<TGameState> gameEvent, List<int> path, ISerializer serializer, EventId eventId = default)
         {
+            Id = eventId.IsValid() ? eventId : EventId.Generate();
             OriginalEvent = serializer.Clone(gameEvent);
             Event = serializer.Clone(gameEvent);
 
@@ -23,7 +24,7 @@ namespace CodeName.EventSystem
         /// <summary>
         /// Unique ID of this event.
         /// </summary>
-        [JsonProperty] public EventId Id { get; private set; } = EventId.Generate();
+        [JsonProperty] public EventId Id { get; private set; }
 
         /// <summary>
         /// The original event as created by the event raiser.

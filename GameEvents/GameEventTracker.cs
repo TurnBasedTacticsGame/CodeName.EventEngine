@@ -63,7 +63,7 @@ namespace CodeName.EventSystem.GameEvents
             }
         }
 
-        public GameEventNode<TGameState> Push(TGameState gameState, GameEvent<TGameState> gameEvent)
+        public GameEventNode<TGameState> Push(TGameState gameState, GameEvent<TGameState> gameEvent, EventId eventId = default)
         {
             var current = CurrentNode;
             var index = current.Children.Count;
@@ -71,7 +71,7 @@ namespace CodeName.EventSystem.GameEvents
             // Update path before passing to GameEventNode's constructor
             PathToCurrentNode.Add(index);
 
-            var node = new GameEventNode<TGameState>(gameEvent, PathToCurrentNode, serializer);
+            var node = new GameEventNode<TGameState>(gameEvent, PathToCurrentNode, serializer, eventId);
             current.Children.Add(node);
 
             List.Add(node);

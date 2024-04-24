@@ -34,8 +34,8 @@ namespace CodeName.EventSystem.GameEvents
         private async StateTask ReplayNextNode()
         {
             Assert.IsTrue(currentNodeI < originalTracker.List.Count);
-
-            var node = Events.Push(State, originalTracker.List[currentNodeI].Event);
+            var originalNode = originalTracker.List[currentNodeI];
+            var node = Events.Push(State, originalNode.Event, originalNode.Id);
             currentNodeI++;
             {
                 await OnEventRaised(node);
