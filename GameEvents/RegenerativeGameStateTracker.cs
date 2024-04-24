@@ -37,6 +37,12 @@ namespace CodeName.EventSystem.GameEvents
         {
             Assert.IsTrue(currentNodeI < originalTracker.List.Count);
             var originalNode = originalTracker.List[currentNodeI];
+
+            while (Events.PathToCurrentNode.Count >= originalNode.Path.Count)
+            {
+                Events.Pop();
+            }
+
             var node = Events.Push(State, originalNode.Event, originalNode.Id);
             currentNodeI++;
             {
