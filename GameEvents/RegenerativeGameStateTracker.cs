@@ -1,3 +1,4 @@
+using System;
 using CodeName.EventSystem.Tasks;
 using CodeName.EventSystem.Utility;
 using UnityEngine.Assertions;
@@ -22,6 +23,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             this.config = config;
             originalTracker = tracker;
+            Events = new GameEventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, tracker.Tree.Id));
         }
 
         public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
