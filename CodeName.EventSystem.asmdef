@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "CodeName.Serialization",
-        "Exanite.Core"
+        "Exanite.Core",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
