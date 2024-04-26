@@ -83,7 +83,7 @@ Uses Event Matching to _synchronously_ react to events. Can modify the game stat
 
 GameEventHandlers are the main way to modify the game state.
 
-### IGameAnimationHandler
+### IGameAnimationHandler (WIP)
 
 Uses event matching to _asynchronously_ react to events. Cannot modify the game state or raise additional events.
 
