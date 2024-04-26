@@ -9,7 +9,11 @@ The event system works off of the following equations:
     - Applying the event log can also give you the next state.
     - This allows for replays.
 
-## GenerativeGameStateTracker
+## GameStateTrackers
+
+These keep track of game state and all events that are raised.
+
+### GenerativeGameStateTracker
 
 This tracker implements the equations:
 - State + Input = Next State
@@ -17,14 +21,14 @@ This tracker implements the equations:
 
 This is typically used on the server to generate an event log that can be sent to clients.
 
-## RegenerativeGameStateTracker
+### RegenerativeGameStateTracker
 
 This tracker implements the equation:
 - State + Event Log = Next State
 
 This is typically used on the client to play animations.
 
-## ConstGameStateTracker
+### ConstGameStateTracker
 
 This tracker implements the equation:
 - State + Const Event = State
@@ -32,10 +36,66 @@ This tracker implements the equation:
 
 This is typically used for querying the game's state. Game event handlers can match on the event and store results as part of the event.
 
-### Const Events
+#### Const Events
 
 Const events are events that are used with the ConstGameStateTracker.
 Contrary to their name, the events themselves CAN be modified, but the GameState CANNOT be modified.
+
+## EventHandlers
+
+These respond to events that are raised.
+
+### Event Phases
+
+Events can be in one of three phases:
+1. Raised - Event has been raised, but can be prevented during this phase.
+2. Confirmed - Event has been raised and can no longer be prevented.
+3. Applied - Event has been applied (`event.Apply()` has been called).
+
+### Event Matching
+
+Event matching is the main way to detect when events happen and react to them.
+
+```cs
+// Matching for a event
+// Note: This supports inheritance so you can match for a base class and be notified of all subclasses of that class
+if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged))
+{
+    Debug.Log($"{unitDamaged.UnitId} was damaged for {unitDamaged.Damage} damage")
+
+    // Heal damaged unit for 1 HP
+    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.UnitId, 1));
+}
+
+// Matching for a event caused by another event
+if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>(out _))
+{
+    Debug.Log($"{unitDamaged.UnitId} was damaged for {unitDamaged.Damage} damage by an ability")
+
+    // Heal damaged unit for 1 HP after being damaged by an ability
+    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.UnitId, 1));
+}
+```
+
+### IGameEventHandler
+
+Uses Event Matching to _synchronously_ react to events. Can modify the game state directly or respond by raising additional events.
+
+GameEventHandlers are the main way to modify the game state.
+
+### IGameAnimationHandler
+
+Uses event matching to _asynchronously_ react to events. Cannot modify the game state or raise additional events.
+
+GameAnimationHandlers are the main way to play animations.
+
+Because animations might require storing state between different event phases, event IDs can be used to determine when an event is confirmed and applied. For example, a character can wind up for an attack during the Confirmed phase, then hit and wind back down during the Applied phase.
+
+## StateTask
+
+Custom task type that is designed to be ran synchronously. While this seems counter intuitive to the purpose of async-await, StateTask allows code to be suspended. This allows code to be written in an intuitive async-await style and be suspended while animations are playing.
+
+StateTask works seamlessly with other task types, but using non-StateTasks in GameEventHandlers is not recommended. This is because most GameStateTrackers expect GameEventHandlers to run synchronously.
 
 ## FAQ
 
