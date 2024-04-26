@@ -150,13 +150,6 @@ await tracker.ApplyEvent(new DamageTakenEvent(unit.Id, Random.Range(0, 10)));
   - Can't fix, but should be very rare.
   - Use integers or fixed point math if this is an issue.
 
-### Using the event matcher (need to verify syntax)
-
-- The following are equivalent, but MatchOn allows for more advanced queries (if needed):
-  - `if (tracker.MatchOn<NameOfEvent, GameState>(out var result)) {}`
-  - `if (tracker.CurrentEvent is NameOfEvent) {}`
-  - `if (eventNode.Event is NameOfEvent) {}` (This one may get removed)
-
 ## Planned changes
 
 ### Event Tree and List replacement
