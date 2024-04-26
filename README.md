@@ -83,11 +83,15 @@ Uses Event Matching to _synchronously_ react to events. Can modify the game stat
 
 GameEventHandlers are the main way to modify the game state.
 
+[StateTasks](#statetask) are used to signify that IGameEventHandlers should run synchronously.
+
 ### IGameAnimationHandler (WIP)
 
 Uses event matching to _asynchronously_ react to events. Cannot modify the game state or raise additional events.
 
 GameAnimationHandlers are the main way to play animations.
+
+[UniTasks](https://github.com/Cysharp/UniTask) are used to signify that IGameEventHandlers should run synchronously.
 
 Because animations might require storing state between different event phases, event IDs can be used to determine when an event is confirmed and applied. For example, a character can wind up for an attack during the Confirmed phase, then hit and wind back down during the Applied phase.
 
