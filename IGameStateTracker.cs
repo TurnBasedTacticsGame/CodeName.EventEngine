@@ -9,6 +9,7 @@ namespace CodeName.EventSystem
         public GameEventTracker<TGameState> Events { get; }
 
         public TGameState State { get; }
+        public GameEventNode<TGameState> CurrentNode { get; }
 
         public StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
     }

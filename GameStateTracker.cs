@@ -17,6 +17,8 @@ namespace CodeName.EventSystem
         public GameStateTrackerConfig<TGameState> Config { get; protected set; }
         public GameEventTracker<TGameState> Events { get; protected set; }
 
+        public GameEventNode<TGameState> CurrentNode => Events.CurrentNode;
+
         public TGameState OriginalState { get; protected set; }
         public TGameState State { get; protected set; }
 
