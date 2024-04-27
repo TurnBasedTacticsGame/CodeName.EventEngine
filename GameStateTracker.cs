@@ -10,7 +10,6 @@ namespace CodeName.EventSystem
             Config = config;
             Events = new GameEventTracker<TGameState>(config.Serializer);
 
-            OriginalState = config.Serializer.Clone(state);
             State = config.Serializer.Clone(state);
         }
 
@@ -19,7 +18,6 @@ namespace CodeName.EventSystem
 
         public GameEventNode<TGameState> CurrentNode => Events.CurrentNode;
 
-        public TGameState OriginalState { get; protected set; }
         public TGameState State { get; protected set; }
 
         /// <summary>
