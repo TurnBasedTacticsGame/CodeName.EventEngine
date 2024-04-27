@@ -68,7 +68,7 @@ if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged))
 }
 
 // Matching for a event caused by another event
-if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>(out _))
+if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>())
 {
     Debug.Log($"{unitDamaged.UnitId} was damaged for {unitDamaged.Damage} damage by an ability")
 
