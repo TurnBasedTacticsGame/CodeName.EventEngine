@@ -10,11 +10,11 @@ namespace CodeName.EventSystem.GameEvents
         {
             var currentNode = Events.Push(State, gameEvent);
             {
-                await OnEventRaised(currentNode);
+                await GameStateTrackerUtility.OnEventRaised(this, Config.GameEventHandlers);
                 currentNode.Lock();
-                await OnEventConfirmed(currentNode);
+                await GameStateTrackerUtility.OnEventConfirmed(this, Config.GameEventHandlers);
                 await currentNode.Event.Apply(this);
-                await OnEventApplied(currentNode);
+                await GameStateTrackerUtility.OnEventApplied(this, Config.GameEventHandlers);
 
                 StoreExpectedState(currentNode);
             }

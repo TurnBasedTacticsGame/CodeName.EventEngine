@@ -43,11 +43,11 @@ namespace CodeName.EventSystem.GameEvents
             var node = Events.Push(State, originalNode.Event, originalNode.Id);
             currentNodeI++;
             {
-                await OnEventRaised(node);
+                await GameStateTrackerUtility.OnEventRaised(this, config.GameEventHandlers);
                 node.Lock();
-                await OnEventConfirmed(node);
+                await GameStateTrackerUtility.OnEventConfirmed(this, config.GameEventHandlers);
                 await node.Event.Apply(this);
-                await OnEventApplied(node);
+                await GameStateTrackerUtility.OnEventApplied(this, config.GameEventHandlers);
 
                 var shouldValidate = config.IsDebugMode && node.ExpectedState != null;
                 if (shouldValidate && !DiffUtility.ValidateGameState(config.Serializer, State, node))

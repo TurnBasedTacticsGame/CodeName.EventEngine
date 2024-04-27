@@ -31,29 +31,5 @@ namespace CodeName.EventSystem
         /// 3. OnEventApplied - Use to react to events after they are applied.
         /// </summary>
         public abstract StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
-
-        protected virtual async StateTask OnEventRaised(GameEventNode<TGameState> node)
-        {
-            foreach (var gameEventHandler in Config.GameEventHandlers)
-            {
-                await gameEventHandler.OnEventRaised(this);
-            }
-        }
-
-        protected virtual async StateTask OnEventConfirmed(GameEventNode<TGameState> node)
-        {
-            foreach (var gameEventHandler in Config.GameEventHandlers)
-            {
-                await gameEventHandler.OnEventConfirmed(this);
-            }
-        }
-
-        protected virtual async StateTask OnEventApplied(GameEventNode<TGameState> node)
-        {
-            foreach (var gameEventHandler in Config.GameEventHandlers)
-            {
-                await gameEventHandler.OnEventApplied(this);
-            }
-        }
     }
 }
