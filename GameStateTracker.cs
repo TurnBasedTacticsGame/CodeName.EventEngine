@@ -36,7 +36,7 @@ namespace CodeName.EventSystem
         {
             foreach (var gameEventHandler in Config.GameEventHandlers)
             {
-                await gameEventHandler.OnEventRaised(this, node);
+                await gameEventHandler.OnEventRaised(this);
             }
         }
 
@@ -44,7 +44,7 @@ namespace CodeName.EventSystem
         {
             foreach (var gameEventHandler in Config.GameEventHandlers)
             {
-                await gameEventHandler.OnEventConfirmed(this, node);
+                await gameEventHandler.OnEventConfirmed(this);
             }
         }
 
@@ -52,7 +52,7 @@ namespace CodeName.EventSystem
         {
             foreach (var gameEventHandler in Config.GameEventHandlers)
             {
-                await gameEventHandler.OnEventApplied(this, node);
+                await gameEventHandler.OnEventApplied(this);
             }
         }
     }
