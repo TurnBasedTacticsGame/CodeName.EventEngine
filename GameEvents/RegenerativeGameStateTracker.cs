@@ -16,10 +16,7 @@ namespace CodeName.EventSystem.GameEvents
         private readonly GameStateTrackerConfig<TGameState> config;
         private readonly GameEventTracker<TGameState> originalTracker;
 
-        public RegenerativeGameStateTracker(
-            TGameState state,
-            GameEventTracker<TGameState> tracker,
-            GameStateTrackerConfig<TGameState> config) : base(state, config)
+        public RegenerativeGameStateTracker(TGameState state, GameEventTracker<TGameState> tracker, GameStateTrackerConfig<TGameState> config) : base(state, config)
         {
             this.config = config;
             originalTracker = tracker;
