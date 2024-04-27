@@ -4,17 +4,25 @@ namespace CodeName.EventSystem
 {
     public static class EventMatchingUtility
     {
+        public static MatchOnResult<TGameEvent, TGameState> MatchOn<TGameEvent, TGameState>(this IGameStateTracker<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
+        {
+            return new MatchOnResult<TGameEvent, TGameState>(context, condition);
+        }
+
         public static MatchOnResult<TGameEvent, TGameState> MatchOn<TGameEvent, TGameState>(this IGameStateTracker<TGameState> context, out MatchOnResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
         {
-            result = new MatchOnResult<TGameEvent, TGameState>(context, condition);
-
+            result = MatchOn(context, condition);
             return result;
+        }
+
+        public static CausedByMatchResult<TGameEvent, TGameState> CausedBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
+        {
+            return new CausedByMatchResult<TGameEvent, TGameState>(context, condition);
         }
 
         public static CausedByMatchResult<TGameEvent, TGameState> CausedBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, out CausedByMatchResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
         {
-            result = new CausedByMatchResult<TGameEvent, TGameState>(context, condition);
-
+            result = CausedBy(context, condition);
             return result;
         }
     }
