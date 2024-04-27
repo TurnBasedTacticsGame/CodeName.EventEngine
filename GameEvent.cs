@@ -4,7 +4,7 @@ namespace CodeName.EventSystem
 {
     public abstract class GameEvent<TGameState>
     {
-        public virtual StateTask Apply(GameStateTracker<TGameState> tracker)
+        public virtual StateTask Apply(IGameStateTracker<TGameState> tracker)
         {
             return StateTask.CompletedTask;
         }

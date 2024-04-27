@@ -1,8 +1,10 @@
+using System;
 using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
 
 namespace CodeName.EventSystem
 {
+    [Obsolete]
     public abstract class GameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
         protected GameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config)

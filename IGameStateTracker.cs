@@ -8,7 +8,7 @@ namespace CodeName.EventSystem
         public GameStateTrackerConfig<TGameState> Config { get; }
 
         public TGameState State { get; }
-        
+
         public GameEventTracker<TGameState> Events { get; }
         public GameEventNode<TGameState> CurrentNode { get; }
 

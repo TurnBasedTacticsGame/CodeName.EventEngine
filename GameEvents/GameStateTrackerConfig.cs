@@ -7,7 +7,7 @@ namespace CodeName.EventSystem.GameEvents
     {
         public bool IsDebugMode { get; set; } = false;
         public ISerializer Serializer { get; set; }
-        public List<IGameEventHandler<TGameState>> GameEventHandlers { get; set; }
+        public IEnumerable<IGameEventHandler<TGameState>> GameEventHandlers { get; set; }
 
         public GameStateTrackerConfig<TGameState> ShallowCopy()
         {
