@@ -81,8 +81,8 @@ namespace CodeName.EventSystem.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
-            public IReadOnlyList<IGameAnimationHandler<TGameState>> AnimationHandlers { get; set; }
-            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; }
+            public IReadOnlyList<IGameAnimationHandler<TGameState>> AnimationHandlers { get; set; } = Array.Empty<IGameAnimationHandler<TGameState>>();
+            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IGameEventHandler<TGameState>>();
         }
     }
 }

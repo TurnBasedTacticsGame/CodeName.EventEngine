@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 using CodeName.Serialization;
@@ -46,7 +47,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
-            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; }
+            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IGameEventHandler<TGameState>>();
         }
     }
 }
