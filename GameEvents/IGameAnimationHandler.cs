@@ -1,13 +1,14 @@
+using CodeName.EventSystem.Tasks;
 using Cysharp.Threading.Tasks;
 
 namespace CodeName.EventSystem.GameEvents
 {
     public interface IGameAnimationHandler<TGameState>
     {
-        public UniTask OnEventRaised(IGameStateTracker<TGameState> tracker);
+        public StateTask OnEventRaised(IGameStateTracker<TGameState> tracker);
 
-        public UniTask OnEventConfirmed(IGameStateTracker<TGameState> tracker);
+        public StateTask OnEventConfirmed(IGameStateTracker<TGameState> tracker);
 
-        public UniTask OnEventApplied(IGameStateTracker<TGameState> tracker);
+        public StateTask OnEventApplied(IGameStateTracker<TGameState> tracker);
     }
 }

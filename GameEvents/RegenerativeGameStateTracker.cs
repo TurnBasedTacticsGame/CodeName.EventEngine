@@ -51,13 +51,13 @@ namespace CodeName.EventSystem.GameEvents
             var node = Events.Push(State, originalNode.Event, originalNode.Id);
             currentNodeI++;
             {
-                await GameStateTrackerUtility.OnEventRaised(this, config.AnimationHandlers);
+                await GameStateTrackerUtility.OnAnimationEventRaised(this, config.AnimationHandlers);
                 await GameStateTrackerUtility.OnEventRaised(this, config.EventHandlers);
                 node.Lock();
-                await GameStateTrackerUtility.OnEventConfirmed(this, config.AnimationHandlers);
+                await GameStateTrackerUtility.OnAnimationEventConfirmed(this, config.AnimationHandlers);
                 await GameStateTrackerUtility.OnEventConfirmed(this, config.EventHandlers);
                 await node.Event.Apply(this);
-                await GameStateTrackerUtility.OnEventApplied(this, config.AnimationHandlers);
+                await GameStateTrackerUtility.OnAnimationEventApplied(this, config.AnimationHandlers);
                 await GameStateTrackerUtility.OnEventApplied(this, config.EventHandlers);
 
                 var shouldValidate = config.IsDebugMode && node.ExpectedState != null;

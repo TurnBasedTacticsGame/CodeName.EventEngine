@@ -30,7 +30,7 @@ namespace CodeName.EventSystem.GameEvents
             }
         }
 
-        public static async UniTask OnEventRaised<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        public static async StateTask OnAnimationEventRaised<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -38,7 +38,7 @@ namespace CodeName.EventSystem.GameEvents
             }
         }
 
-        public static async UniTask OnEventConfirmed<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        public static async StateTask OnAnimationEventConfirmed<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -46,7 +46,7 @@ namespace CodeName.EventSystem.GameEvents
             }
         }
 
-        public static async UniTask OnEventApplied<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        public static async StateTask OnAnimationEventApplied<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
