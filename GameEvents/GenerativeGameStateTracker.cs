@@ -16,7 +16,7 @@ namespace CodeName.EventSystem.GameEvents
         public GenerativeGameStateTracker(TGameState state, Config config)
         {
             this.config = config;
-            State = state;
+            State = config.Serializer.Clone(state);
             Events = new GameEventTracker<TGameState>(config.Serializer);
         }
 

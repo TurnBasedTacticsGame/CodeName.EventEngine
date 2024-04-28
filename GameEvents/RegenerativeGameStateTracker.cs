@@ -27,7 +27,7 @@ namespace CodeName.EventSystem.GameEvents
             this.config = config;
             originalTracker = tracker;
 
-            State = state;
+            State = config.Serializer.Clone(state);
             Events = new GameEventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, tracker.Tree.Id));
         }
 
