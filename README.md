@@ -13,6 +13,8 @@ The event system works off of the following equations:
 
 These keep track of game state and all events that are raised.
 
+All trackers guarantee that GameState passed in through their constructor will not be modified.
+
 ### GenerativeGameStateTracker
 
 This tracker implements the equations:
