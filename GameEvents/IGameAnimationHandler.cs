@@ -4,10 +4,10 @@ namespace CodeName.EventSystem.GameEvents
 {
     public interface IGameAnimationHandler<TGameState>
     {
-        public StateTask OnEventRaised(IGameStateTracker<TGameState> tracker);
+        public StateTask OnAnimationEventRaised(IGameStateTracker<TGameState> tracker);
 
-        public StateTask OnEventConfirmed(IGameStateTracker<TGameState> tracker);
+        public StateTask OnAnimationEventConfirmed(IGameStateTracker<TGameState> tracker);
 
-        public StateTask OnEventApplied(IGameStateTracker<TGameState> tracker);
+        public StateTask OnAnimationEventApplied(IGameStateTracker<TGameState> tracker);
     }
 }

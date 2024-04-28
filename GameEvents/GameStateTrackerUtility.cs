@@ -33,7 +33,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             foreach (var eventHandler in eventHandlers)
             {
-                await eventHandler.OnEventRaised(tracker);
+                await eventHandler.OnAnimationEventRaised(tracker);
             }
         }
 
@@ -41,7 +41,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             foreach (var eventHandler in eventHandlers)
             {
-                await eventHandler.OnEventConfirmed(tracker);
+                await eventHandler.OnAnimationEventConfirmed(tracker);
             }
         }
 
@@ -49,7 +49,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             foreach (var eventHandler in eventHandlers)
             {
-                await eventHandler.OnEventApplied(tracker);
+                await eventHandler.OnAnimationEventApplied(tracker);
             }
         }
     }
