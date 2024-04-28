@@ -1,5 +1,4 @@
 using CodeName.EventSystem.Tasks;
-using Cysharp.Threading.Tasks;
 
 namespace CodeName.EventSystem.GameEvents
 {
