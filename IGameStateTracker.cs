@@ -11,7 +11,7 @@ namespace CodeName.EventSystem
         public GameEventTracker<TGameState> Events { get; }
         public GameEventNode<TGameState> CurrentNode => Events.CurrentNode;
 
-        public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; }
+        public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; }
 
         /// <summary>
         /// Raise an event to be applied.

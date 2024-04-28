@@ -10,7 +10,7 @@ namespace CodeName.EventSystem.GameEvents
 
         public TGameState State { get; }
         public GameEventTracker<TGameState> Events { get; }
-        public IEnumerable<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
+        public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
         public GenerativeGameStateTracker(TGameState state, Config config)
         {
@@ -46,7 +46,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
-            public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; set; }
+            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; }
         }
     }
 }

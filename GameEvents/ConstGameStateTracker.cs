@@ -11,9 +11,9 @@ namespace CodeName.EventSystem.GameEvents
 
         public TGameState State { get; }
         public GameEventTracker<TGameState> Events { get; }
-        public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; }
+        public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; }
 
-        public ConstGameStateTracker(TGameState state, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
+        public ConstGameStateTracker(TGameState state, IReadOnlyList<IGameEventHandler<TGameState>> eventHandlers)
         {
             State = state;
             Events = new GameEventTracker<TGameState>(Serializer);
