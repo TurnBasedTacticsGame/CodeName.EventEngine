@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CodeName.EventSystem.GameEvents;
 using CodeName.EventSystem.Tasks;
 
@@ -5,12 +6,12 @@ namespace CodeName.EventSystem
 {
     public interface IGameStateTracker<TGameState>
     {
-        public GameStateTrackerConfig<TGameState> Config { get; }
-
         public TGameState State { get; }
 
         public GameEventTracker<TGameState> Events { get; }
-        public GameEventNode<TGameState> CurrentNode { get; }
+        public GameEventNode<TGameState> CurrentNode => Events.CurrentNode;
+
+        public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; }
 
         /// <summary>
         /// Raise an event to be applied.

@@ -1,32 +1,36 @@
 using System;
+using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
 using CodeName.Serialization;
 
 namespace CodeName.EventSystem.GameEvents
 {
-    public class ConstGameStateTracker<TGameState> : GameStateTracker<TGameState>
+    public class ConstGameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
-        public ConstGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config) : base(state, UseNullOpSerializer(config)) {}
+        private static NullOpSerializer Serializer;
 
-        public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
+        public TGameState State { get; }
+        public GameEventTracker<TGameState> Events { get; }
+        public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; }
+
+        public ConstGameStateTracker(TGameState state, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
+        {
+            State = state;
+            Events = new GameEventTracker<TGameState>(Serializer);
+            EventHandlers = eventHandlers;
+        }
+
+        public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
             var currentNode = Events.Push(State, gameEvent);
             {
-                await GameStateTrackerUtility.OnEventRaised(this, Config.GameEventHandlers);
+                await GameStateTrackerUtility.OnEventRaised(this, EventHandlers);
                 currentNode.Lock();
-                await GameStateTrackerUtility.OnEventConfirmed(this, Config.GameEventHandlers);
+                await GameStateTrackerUtility.OnEventConfirmed(this, EventHandlers);
                 await currentNode.Event.Apply(this);
-                await GameStateTrackerUtility.OnEventApplied(this, Config.GameEventHandlers);
+                await GameStateTrackerUtility.OnEventApplied(this, EventHandlers);
             }
             Events.Pop();
-        }
-
-        private static GameStateTrackerConfig<TGameState> UseNullOpSerializer(GameStateTrackerConfig<TGameState> config)
-        {
-            var result = config.ShallowCopy();
-            result.Serializer = new NullOpSerializer();
-
-            return result;
         }
 
         private class NullOpSerializer : ISerializer

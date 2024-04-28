@@ -1,20 +1,33 @@
+using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
+using CodeName.Serialization;
 
 namespace CodeName.EventSystem.GameEvents
 {
-    public class GenerativeGameStateTracker<TGameState> : GameStateTracker<TGameState>
+    public class GenerativeGameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
-        public GenerativeGameStateTracker(TGameState state, GameStateTrackerConfig<TGameState> config) : base(state, config) {}
+        private readonly Config config;
 
-        public override async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
+        public TGameState State { get; }
+        public GameEventTracker<TGameState> Events { get; }
+        public IEnumerable<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
+
+        public GenerativeGameStateTracker(TGameState state, Config config)
+        {
+            this.config = config;
+            State = state;
+            Events = new GameEventTracker<TGameState>(config.Serializer);
+        }
+
+        public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
             var currentNode = Events.Push(State, gameEvent);
             {
-                await GameStateTrackerUtility.OnEventRaised(this, Config.GameEventHandlers);
+                await GameStateTrackerUtility.OnEventRaised(this, EventHandlers);
                 currentNode.Lock();
-                await GameStateTrackerUtility.OnEventConfirmed(this, Config.GameEventHandlers);
+                await GameStateTrackerUtility.OnEventConfirmed(this, EventHandlers);
                 await currentNode.Event.Apply(this);
-                await GameStateTrackerUtility.OnEventApplied(this, Config.GameEventHandlers);
+                await GameStateTrackerUtility.OnEventApplied(this, EventHandlers);
 
                 StoreExpectedState(currentNode);
             }
@@ -23,10 +36,17 @@ namespace CodeName.EventSystem.GameEvents
 
         private void StoreExpectedState(GameEventNode<TGameState> currentNode)
         {
-            if (Config.IsDebugMode)
+            if (config.IsDebugMode)
             {
-                currentNode.ExpectedState = Config.Serializer.Clone(State);
+                currentNode.ExpectedState = config.Serializer.Clone(State);
             }
+        }
+
+        public class Config
+        {
+            public bool IsDebugMode { get; set; } = false;
+            public ISerializer Serializer { get; set; }
+            public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; set; }
         }
     }
 }
