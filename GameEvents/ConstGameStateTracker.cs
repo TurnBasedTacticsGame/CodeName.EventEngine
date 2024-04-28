@@ -7,7 +7,7 @@ namespace CodeName.EventSystem.GameEvents
 {
     public class ConstGameStateTracker<TGameState> : IGameStateTracker<TGameState>
     {
-        private static NullOpSerializer Serializer;
+        private static NullOpSerializer Serializer = new();
 
         public TGameState State { get; }
         public GameEventTracker<TGameState> Events { get; }
