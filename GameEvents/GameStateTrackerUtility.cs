@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeName.EventSystem.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace CodeName.EventSystem.GameEvents
 {
@@ -22,6 +23,30 @@ namespace CodeName.EventSystem.GameEvents
         }
 
         public static async StateTask OnEventApplied<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
+        {
+            foreach (var eventHandler in eventHandlers)
+            {
+                await eventHandler.OnEventApplied(tracker);
+            }
+        }
+
+        public static async UniTask OnEventRaised<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        {
+            foreach (var eventHandler in eventHandlers)
+            {
+                await eventHandler.OnEventRaised(tracker);
+            }
+        }
+
+        public static async UniTask OnEventConfirmed<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        {
+            foreach (var eventHandler in eventHandlers)
+            {
+                await eventHandler.OnEventConfirmed(tracker);
+            }
+        }
+
+        public static async UniTask OnEventApplied<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {

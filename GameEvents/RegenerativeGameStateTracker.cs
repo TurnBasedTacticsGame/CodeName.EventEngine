@@ -51,11 +51,14 @@ namespace CodeName.EventSystem.GameEvents
             var node = Events.Push(State, originalNode.Event, originalNode.Id);
             currentNodeI++;
             {
-                await GameStateTrackerUtility.OnEventRaised(this, EventHandlers);
+                await GameStateTrackerUtility.OnEventRaised(this, config.AnimationHandlers);
+                await GameStateTrackerUtility.OnEventRaised(this, config.EventHandlers);
                 node.Lock();
-                await GameStateTrackerUtility.OnEventConfirmed(this, EventHandlers);
+                await GameStateTrackerUtility.OnEventConfirmed(this, config.AnimationHandlers);
+                await GameStateTrackerUtility.OnEventConfirmed(this, config.EventHandlers);
                 await node.Event.Apply(this);
-                await GameStateTrackerUtility.OnEventApplied(this, EventHandlers);
+                await GameStateTrackerUtility.OnEventApplied(this, config.AnimationHandlers);
+                await GameStateTrackerUtility.OnEventApplied(this, config.EventHandlers);
 
                 var shouldValidate = config.IsDebugMode && node.ExpectedState != null;
                 if (shouldValidate && !DiffUtility.ValidateGameState(config.Serializer, State, node))
@@ -78,6 +81,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
+            public IEnumerable<IGameAnimationHandler<TGameState>> AnimationHandlers { get; set; }
             public IEnumerable<IGameEventHandler<TGameState>> EventHandlers { get; set; }
         }
     }
