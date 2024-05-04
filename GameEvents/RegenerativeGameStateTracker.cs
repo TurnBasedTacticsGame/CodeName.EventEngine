@@ -49,7 +49,7 @@ namespace CodeName.EventSystem.GameEvents
                 Events.Pop();
             }
 
-            var node = Events.Push(State, originalNode.Event, originalNode.Id);
+            var node = Events.Push(State, originalNode.OriginalEvent, originalNode.Id);
             {
                 await GameStateTrackerUtility.OnAnimationEventRaised(this, config.AnimationHandlers);
                 await GameStateTrackerUtility.OnEventRaised(this, config.EventHandlers);
