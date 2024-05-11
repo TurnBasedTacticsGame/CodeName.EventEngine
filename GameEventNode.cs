@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using CodeName.EventSystem.GameEvents;
 using CodeName.Serialization;
+using CodeName.Serialization.Validation;
 using Newtonsoft.Json;
 
 namespace CodeName.EventSystem
 {
+    [ValidateSerializeByValue]
     public class GameEventNode<TGameState>
     {
         [JsonConstructor]
@@ -31,7 +33,7 @@ namespace CodeName.EventSystem
         /// <para/>
         /// Modifying this event is not recommended.
         /// </summary>
-        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
+        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)] [SerializeByValue]
         public GameEvent<TGameState> OriginalEvent { get; private set; }
 
         /// <summary>
@@ -39,30 +41,34 @@ namespace CodeName.EventSystem
         /// <para/>
         /// Modifying this event is allowed.
         /// </summary>
-        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
+        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)] [SerializeByValue]
         public GameEvent<TGameState> Event { get; private set; }
 
         /// <summary>
         /// The path of this <see cref="GameEventNode{TState}"/> in the event tree.
         /// </summary>
-        [JsonProperty] public List<int> Path { get; private set; }
+        [JsonProperty]
+        public List<int> Path { get; private set; }
 
         /// <summary>
         /// The events raised by this event being applied or in response to this event.
         /// <para/>
         /// In other words, child events are events caused by this event.
         /// </summary>
-        [JsonProperty] public List<GameEventNode<TGameState>> Children { get; private set; } = new();
+        [JsonProperty] [SerializeByValue]
+        public List<GameEventNode<TGameState>> Children { get; private set; } = new();
 
         /// <summary>
         /// A locked event can no longer be prevented.
         /// </summary>
-        [JsonProperty] public bool IsLocked { get; private set; }
+        [JsonProperty]
+        public bool IsLocked { get; private set; }
 
         /// <summary>
         /// Expected game state after the event is applied. Usually used for debugging purposes.
         /// </summary>
-        [JsonIgnore] public TGameState ExpectedState { get; set; }
+        [JsonIgnore]
+        public TGameState ExpectedState { get; set; }
 
         /// <summary>
         /// Prevent an event from being applied.
@@ -86,7 +92,7 @@ namespace CodeName.EventSystem
         }
 
         /// <summary>
-        /// Called by <see cref="GameStateTracker{TGameState}"/> after the OnEventRaised event.
+        /// Called by <see cref="IGameStateTracker{TGameState}"/> after the OnEventRaised event.
         /// </summary>
         public void Lock()
         {

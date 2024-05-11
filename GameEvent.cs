@@ -1,7 +1,9 @@
 using CodeName.EventSystem.Tasks;
+using CodeName.Serialization.Validation;
 
 namespace CodeName.EventSystem
 {
+    [ValidateSerializeByValue]
     public abstract class GameEvent<TGameState>
     {
         public virtual StateTask Apply(IGameStateTracker<TGameState> tracker)
