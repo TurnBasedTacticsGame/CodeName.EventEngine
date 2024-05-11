@@ -1,3 +1,4 @@
+using CodeName.Serialization.Validation;
 using Newtonsoft.Json;
 
 namespace CodeName.EventSystem.GameEvents
@@ -12,7 +13,7 @@ namespace CodeName.EventSystem.GameEvents
             OriginalEvent = originalEvent;
         }
 
-        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)]
+        [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)] [SerializeByValue]
         public GameEvent<TGameState> OriginalEvent { get; }
 
         public override string ToString()
