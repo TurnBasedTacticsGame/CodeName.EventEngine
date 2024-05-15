@@ -16,7 +16,9 @@ namespace CodeName.EventSystem.GameEvents
         private int currentNodeI = 1;
 
         private readonly Config config;
-        private readonly GameEventTracker<TGameState> originalTracker;
+
+        [Obsolete]
+        private readonly List<GameEventNode<TGameState>> originalEventList;
 
         public TGameState State { get; private set; }
         public GameEventTracker<TGameState> Events { get; }
@@ -25,10 +27,12 @@ namespace CodeName.EventSystem.GameEvents
         public RegenerativeGameStateTracker(TGameState state, GameEventTracker<TGameState> tracker, Config config)
         {
             this.config = config;
-            originalTracker = tracker;
 
             State = config.Serializer.Clone(state);
             Events = new GameEventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, tracker.Tree.Id));
+
+            originalEventList = new List<GameEventNode<TGameState>>();
+            FlattenEventTree(tracker.Tree, originalEventList);
         }
 
         public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
@@ -40,8 +44,8 @@ namespace CodeName.EventSystem.GameEvents
 
         private async StateTask ReplayNextNode()
         {
-            Assert.IsTrue(currentNodeI < originalTracker.List.Count);
-            var originalNode = originalTracker.List[currentNodeI];
+            Assert.IsTrue(currentNodeI < originalEventList.Count);
+            var originalNode = originalEventList[currentNodeI];
             currentNodeI++;
 
             while (Events.PathToCurrentNode.Count >= originalNode.Path.Count)
@@ -74,7 +78,7 @@ namespace CodeName.EventSystem.GameEvents
         {
             await ReplayNextNode();
 
-            Assert.AreEqual(currentNodeI, Events.List.Count);
+            Assert.AreEqual(currentNodeI, originalEventList.Count);
         }
 
         public class Config
@@ -83,6 +87,15 @@ namespace CodeName.EventSystem.GameEvents
             public ISerializer Serializer { get; set; }
             public IReadOnlyList<IGameAnimationHandler<TGameState>> AnimationHandlers { get; set; } = Array.Empty<IGameAnimationHandler<TGameState>>();
             public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IGameEventHandler<TGameState>>();
+        }
+
+        private void FlattenEventTree(GameEventNode<TGameState> root, List<GameEventNode<TGameState>> results)
+        {
+            results.Add(root);
+            foreach (var childEventNode in root.Children)
+            {
+                FlattenEventTree(childEventNode, results);
+            }
         }
     }
 }

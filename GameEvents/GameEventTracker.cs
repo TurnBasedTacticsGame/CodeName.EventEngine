@@ -14,15 +14,9 @@ namespace CodeName.EventSystem.GameEvents
         public GameEventTracker(ISerializer serializer)
         {
             this.serializer = serializer;
+
             PathToCurrentNode = new List<int>();
-
-            var root = new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), PathToCurrentNode, serializer);
-
-            Tree = root;
-            List = new List<GameEventNode<TGameState>>
-            {
-                root,
-            };
+            Tree = new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), PathToCurrentNode, serializer);
         }
 
         /// <summary>
@@ -35,17 +29,25 @@ namespace CodeName.EventSystem.GameEvents
         {
             this.serializer = serializer;
 
+            PathToCurrentNode = new List<int>();
             Tree = root;
 
-            List = new List<GameEventNode<TGameState>>();
-            FlattenEventTree(root, List);
+            var current = root;
+            while (true)
+            {
+                if (current.Children.Count == 0)
+                {
+                    break;
+                }
 
-            PathToCurrentNode = new List<int>(List[List.Count - 1].Path);
+                var lastChildIndex = current.Children.Count - 1;
+
+                PathToCurrentNode.Add(lastChildIndex);
+                current = current.Children[lastChildIndex];
+            }
         }
 
         public GameEventNode<TGameState> Tree { get; }
-        [Obsolete]
-        public List<GameEventNode<TGameState>> List { get; }
         public List<int> PathToCurrentNode { get; }
 
         public GameEventNode<TGameState> CurrentNode
@@ -74,23 +76,12 @@ namespace CodeName.EventSystem.GameEvents
             var node = new GameEventNode<TGameState>(gameEvent, PathToCurrentNode, serializer, eventId);
             current.Children.Add(node);
 
-            List.Add(node);
-
             return node;
         }
 
         public void Pop()
         {
             PathToCurrentNode.RemoveAt(PathToCurrentNode.Count - 1);
-        }
-
-        private void FlattenEventTree(GameEventNode<TGameState> root, List<GameEventNode<TGameState>> results)
-        {
-            results.Add(root);
-            foreach (var childEventNode in root.Children)
-            {
-                FlattenEventTree(childEventNode, results);
-            }
         }
     }
 }
