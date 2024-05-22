@@ -63,19 +63,19 @@ Event matching is the main way to detect when events happen and react to them.
 // Note: This supports inheritance so you can match for a base class and be notified of all subclasses of that class
 if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged))
 {
-    Debug.Log($"{unitDamaged.UnitId} was damaged for {unitDamaged.Damage} damage")
+    Debug.Log($"{unitDamaged.Event.UnitId} was damaged for {unitDamaged.Event.Damage} damage");
 
     // Heal damaged unit for 1 HP
-    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.UnitId, 1));
+    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.Event.UnitId, 1));
 }
 
 // Matching for a event caused by another event
 if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>())
 {
-    Debug.Log($"{unitDamaged.UnitId} was damaged for {unitDamaged.Damage} damage by an ability")
+    Debug.Log($"{unitDamaged.Event.UnitId} was damaged for {unitDamaged.Event.Damage} damage by an ability");
 
     // Heal damaged unit for 1 HP after being damaged by an ability
-    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.UnitId, 1));
+    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.Event.UnitId, 1));
 }
 ```
 
