@@ -10,9 +10,7 @@ namespace CodeName.EventSystem
         [JsonConstructor]
         private EventLog() {}
 
-        public EventLog(GameEventNode<TGameState> events, [NotNull] TGameState originalState) : this(events, originalState, default) {}
-
-        public EventLog(GameEventNode<TGameState> events, [NotNull] TGameState originalState, TGameState expectedState)
+        public EventLog(GameEventNode<TGameState> events, TGameState originalState = default, TGameState expectedState = default)
         {
             OriginalState = originalState;
             ExpectedState = expectedState;
@@ -21,9 +19,15 @@ namespace CodeName.EventSystem
         }
 
         /// <summary>
-        /// The original state. Applying the <see cref="Events"/> to the <see cref="OriginalState"/> should result in the <see cref="ExpectedState"/>, if it is available.
+        /// The events that occurred.
         /// </summary>
         [NotNull]
+        [SerializeByValue] public GameEventNode<TGameState> Events { get; set; }
+
+        /// <summary>
+        /// The original state. Applying the <see cref="Events"/> to the <see cref="OriginalState"/> should result in the <see cref="ExpectedState"/>, if it is available.
+        /// </summary>
+        [CanBeNull]
         [SerializeByValue] public TGameState OriginalState { get; set; }
 
         /// <summary>
@@ -31,11 +35,5 @@ namespace CodeName.EventSystem
         /// </summary>
         [CanBeNull]
         [SerializeByValue] public TGameState ExpectedState { get; set; }
-
-        /// <summary>
-        /// The events that occurred.
-        /// </summary>
-        [NotNull]
-        [SerializeByValue] public GameEventNode<TGameState> Events { get; set; }
     }
 }
