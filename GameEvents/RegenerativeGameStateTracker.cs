@@ -24,15 +24,15 @@ namespace CodeName.EventSystem.GameEvents
         public GameEventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
-        public RegenerativeGameStateTracker(TGameState state, GameEventTracker<TGameState> tracker, Config config)
+        public RegenerativeGameStateTracker(TGameState state, GameEventNode<TGameState> events, Config config)
         {
             this.config = config;
 
             State = config.Serializer.Clone(state);
-            Events = new GameEventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, tracker.Tree.Id));
+            Events = new GameEventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, events.Id));
 
             originalEventList = new List<GameEventNode<TGameState>>();
-            FlattenEventTree(tracker.Tree, originalEventList);
+            FlattenEventTree(events, originalEventList);
         }
 
         public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
