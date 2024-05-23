@@ -1,13 +1,22 @@
 using CodeName.Serialization.Validation;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace CodeName.EventSystem
 {
     public class EventLog<TGameState>
     {
-        public EventLog([NotNull] TGameState originalState, TGameState expectedState)
+        [JsonConstructor]
+        private EventLog() {}
+
+        public EventLog(GameEventNode<TGameState> events, [NotNull] TGameState originalState) : this(events, originalState, default) {}
+
+        public EventLog(GameEventNode<TGameState> events, [NotNull] TGameState originalState, TGameState expectedState)
         {
             OriginalState = originalState;
+            ExpectedState = expectedState;
+
+            Events = events;
         }
 
         /// <summary>
