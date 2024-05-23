@@ -35,6 +35,7 @@ namespace CodeName.EventSystem
         /// <summary>
         /// The events that occurred.
         /// </summary>
+        [NotNull]
         [SerializeByValue] public GameEventNode<TGameState> Events { get; set; }
     }
 }
