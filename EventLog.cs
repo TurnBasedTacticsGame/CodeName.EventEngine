@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 namespace CodeName.EventSystem
 {
+    [ValidateSerializeByValue]
     public class EventLog<TGameState>
     {
         [JsonConstructor]
