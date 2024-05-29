@@ -25,14 +25,21 @@ namespace CodeName.EventSystem
         [SerializeByValue] public GameEventNode<TGameState> Events { get; set; }
 
         /// <summary>
-        /// The original state. Applying the <see cref="Events"/> to the <see cref="OriginalState"/> should result in the <see cref="ExpectedState"/>, if it is available.
+        /// The original state prior to applying the <see cref="Events"/>.
+        /// Applying the <see cref="Events"/> to the <see cref="OriginalState"/> should result in the <see cref="ExpectedState"/>, if it is available.
         /// </summary>
+        /// <remarks>
+        /// It is up to the user to decide whether to provide this value or not.
+        /// </remarks>
         [CanBeNull]
         [SerializeByValue] public TGameState OriginalState { get; set; }
 
         /// <summary>
-        /// The expected state after applying the <see cref="Events"/>. Can be null.
+        /// The expected state after applying the <see cref="Events"/>.
         /// </summary>
+        /// <remarks>
+        /// It is up to the user to decide whether to provide this value or not.
+        /// </remarks>
         [CanBeNull]
         [SerializeByValue] public TGameState ExpectedState { get; set; }
     }
