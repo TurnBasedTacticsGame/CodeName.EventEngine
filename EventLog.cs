@@ -10,6 +10,12 @@ namespace CodeName.EventSystem
         [JsonConstructor]
         private EventLog() {}
 
+        /// <summary>
+        /// Creates a new event log.
+        /// </summary>
+        /// <remarks>
+        /// Parameters are not cloned.
+        /// </remarks>
         public EventLog(GameEventNode<TGameState> events, TGameState originalState = default, TGameState expectedState = default)
         {
             OriginalState = originalState;
@@ -42,5 +48,16 @@ namespace CodeName.EventSystem
         /// </remarks>
         [CanBeNull]
         [SerializeByValue] public TGameState ExpectedState { get; set; }
+
+        /// <summary>
+        /// Creates a new event log using the values of this log.
+        /// </summary>
+        /// <remarks>
+        /// Values are not cloned.
+        /// </remarks>
+        public EventLog<TGameState> ShallowClone()
+        {
+            return new EventLog<TGameState>(Events, OriginalState, ExpectedState);
+        }
     }
 }
