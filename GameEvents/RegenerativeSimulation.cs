@@ -22,7 +22,7 @@ namespace CodeName.EventEngine.GameEvents
 
         public TGameState State { get; private set; }
         public EventTracker<TGameState> Events { get; }
-        public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
+        public IReadOnlyList<IEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
         public RegenerativeSimulation(TGameState state, GameEventNode<TGameState> events, Config config)
         {
@@ -85,8 +85,8 @@ namespace CodeName.EventEngine.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
-            public IReadOnlyList<IGameAnimationHandler<TGameState>> AnimationHandlers { get; set; } = Array.Empty<IGameAnimationHandler<TGameState>>();
-            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IGameEventHandler<TGameState>>();
+            public IReadOnlyList<IAnimationHandler<TGameState>> AnimationHandlers { get; set; } = Array.Empty<IAnimationHandler<TGameState>>();
+            public IReadOnlyList<IEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IEventHandler<TGameState>>();
         }
 
         private void FlattenEventTree(GameEventNode<TGameState> root, List<GameEventNode<TGameState>> results)

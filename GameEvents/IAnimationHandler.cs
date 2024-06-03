@@ -2,7 +2,7 @@ using CodeName.EventEngine.Tasks;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public interface IGameAnimationHandler<TGameState>
+    public interface IAnimationHandler<TGameState>
     {
         public StateTask OnAnimationEventRaised(ISimulation<TGameState> simulation);
 

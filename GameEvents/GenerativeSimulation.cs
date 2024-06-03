@@ -11,7 +11,7 @@ namespace CodeName.EventEngine.GameEvents
 
         public TGameState State { get; }
         public EventTracker<TGameState> Events { get; }
-        public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
+        public IReadOnlyList<IEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
         public GenerativeSimulation(TGameState state, Config config)
         {
@@ -47,7 +47,7 @@ namespace CodeName.EventEngine.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
-            public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IGameEventHandler<TGameState>>();
+            public IReadOnlyList<IEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IEventHandler<TGameState>>();
         }
     }
 }
