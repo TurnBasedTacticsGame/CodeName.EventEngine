@@ -8,7 +8,7 @@ namespace CodeName.EventEngine
     {
         public TGameState State { get; }
 
-        public GameEventTracker<TGameState> Events { get; }
+        public EventTracker<TGameState> Events { get; }
         public GameEventNode<TGameState> CurrentNode => Events.CurrentNode;
 
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; }

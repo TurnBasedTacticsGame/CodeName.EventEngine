@@ -10,14 +10,14 @@ namespace CodeName.EventEngine.GameEvents
         private readonly Config config;
 
         public TGameState State { get; }
-        public GameEventTracker<TGameState> Events { get; }
+        public EventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
         public GenerativeGameStateTracker(TGameState state, Config config)
         {
             this.config = config;
             State = config.Serializer.Clone(state);
-            Events = new GameEventTracker<TGameState>(config.Serializer);
+            Events = new EventTracker<TGameState>(config.Serializer);
         }
 
         public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)

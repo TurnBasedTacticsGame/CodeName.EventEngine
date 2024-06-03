@@ -10,13 +10,13 @@ namespace CodeName.EventEngine.GameEvents
         private static NullOpSerializer Serializer = new();
 
         public TGameState State { get; }
-        public GameEventTracker<TGameState> Events { get; }
+        public EventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; }
 
         public ConstGameStateTracker(TGameState state, IReadOnlyList<IGameEventHandler<TGameState>> eventHandlers)
         {
             State = state;
-            Events = new GameEventTracker<TGameState>(Serializer);
+            Events = new EventTracker<TGameState>(Serializer);
             EventHandlers = eventHandlers;
         }
 

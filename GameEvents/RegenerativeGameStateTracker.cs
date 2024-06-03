@@ -21,7 +21,7 @@ namespace CodeName.EventEngine.GameEvents
         private readonly List<GameEventNode<TGameState>> originalEventList;
 
         public TGameState State { get; private set; }
-        public GameEventTracker<TGameState> Events { get; }
+        public EventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
         public RegenerativeGameStateTracker(TGameState state, GameEventNode<TGameState> events, Config config)
@@ -29,7 +29,7 @@ namespace CodeName.EventEngine.GameEvents
             this.config = config;
 
             State = config.Serializer.Clone(state);
-            Events = new GameEventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, events.Id));
+            Events = new EventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, events.Id));
 
             originalEventList = new List<GameEventNode<TGameState>>();
             FlattenEventTree(events, originalEventList);

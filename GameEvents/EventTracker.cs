@@ -4,14 +4,14 @@ using CodeName.Serialization;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public class GameEventTracker<TGameState>
+    public class EventTracker<TGameState>
     {
         private readonly ISerializer serializer;
 
         /// <summary>
-        /// Creates a new <see cref="GameEventTracker{TGameState}"/>.
+        /// Creates a new <see cref="EventTracker{TGameState}"/>.
         /// </summary>
-        public GameEventTracker(ISerializer serializer)
+        public EventTracker(ISerializer serializer)
         {
             this.serializer = serializer;
 
@@ -20,12 +20,12 @@ namespace CodeName.EventEngine.GameEvents
         }
 
         /// <summary>
-        /// Creates a new <see cref="GameEventTracker{TGameState}"/> using an existing event tree.
+        /// Creates a new <see cref="EventTracker{TGameState}"/> using an existing event tree.
         /// <para/>
         /// Note: This does not clone the existing event tree. The passed in event tree is used directly.
         /// If this is not desirable, clone the tree before passing it in.
         /// </summary>
-        public GameEventTracker(ISerializer serializer, GameEventNode<TGameState> root)
+        public EventTracker(ISerializer serializer, GameEventNode<TGameState> root)
         {
             this.serializer = serializer;
 
