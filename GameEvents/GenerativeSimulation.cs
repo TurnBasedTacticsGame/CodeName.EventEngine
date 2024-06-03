@@ -5,7 +5,7 @@ using CodeName.Serialization;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public class GenerativeGameStateTracker<TGameState> : IGameStateTracker<TGameState>
+    public class GenerativeSimulation<TGameState> : ISimulation<TGameState>
     {
         private readonly Config config;
 
@@ -13,7 +13,7 @@ namespace CodeName.EventEngine.GameEvents
         public EventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
-        public GenerativeGameStateTracker(TGameState state, Config config)
+        public GenerativeSimulation(TGameState state, Config config)
         {
             this.config = config;
             State = config.Serializer.Clone(state);

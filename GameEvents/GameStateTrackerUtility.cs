@@ -5,7 +5,7 @@ namespace CodeName.EventEngine.GameEvents
 {
     public static class GameStateTrackerUtility
     {
-        public static async StateTask OnEventRaised<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
+        public static async StateTask OnEventRaised<TGameState>(ISimulation<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -13,7 +13,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnEventConfirmed<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
+        public static async StateTask OnEventConfirmed<TGameState>(ISimulation<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -21,7 +21,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnEventApplied<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
+        public static async StateTask OnEventApplied<TGameState>(ISimulation<TGameState> tracker, IEnumerable<IGameEventHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -29,7 +29,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnAnimationEventRaised<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        public static async StateTask OnAnimationEventRaised<TGameState>(ISimulation<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -37,7 +37,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnAnimationEventConfirmed<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        public static async StateTask OnAnimationEventConfirmed<TGameState>(ISimulation<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -45,7 +45,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnAnimationEventApplied<TGameState>(IGameStateTracker<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
+        public static async StateTask OnAnimationEventApplied<TGameState>(ISimulation<TGameState> tracker, IEnumerable<IGameAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {

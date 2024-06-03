@@ -2,7 +2,7 @@ namespace CodeName.EventEngine.GameEvents.Matching
 {
     public readonly struct MatchOnResult<TGameEvent, TGameState> : INodeMatchResult<TGameState> where TGameEvent : GameEvent<TGameState>
     {
-        public MatchOnResult(IGameStateTracker<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition)
+        public MatchOnResult(ISimulation<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition)
         {
             Tracker = context;
             Node = null;
@@ -18,7 +18,7 @@ namespace CodeName.EventEngine.GameEvents.Matching
 
         public bool IsSuccess => Event != null;
 
-        public IGameStateTracker<TGameState> Tracker { get; }
+        public ISimulation<TGameState> Tracker { get; }
         public GameEventNode<TGameState> Node { get; }
         public TGameEvent Event { get; }
 

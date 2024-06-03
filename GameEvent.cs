@@ -6,7 +6,7 @@ namespace CodeName.EventEngine
     [ValidateSerializeByValue]
     public abstract class GameEvent<TGameState>
     {
-        public virtual StateTask Apply(IGameStateTracker<TGameState> tracker)
+        public virtual StateTask Apply(ISimulation<TGameState> tracker)
         {
             return StateTask.CompletedTask;
         }

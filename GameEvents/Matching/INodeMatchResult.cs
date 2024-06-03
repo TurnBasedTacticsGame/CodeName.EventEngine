@@ -4,7 +4,7 @@ namespace CodeName.EventEngine.GameEvents.Matching
     {
         public bool IsSuccess { get; }
 
-        public IGameStateTracker<TGameState> Tracker { get; }
+        public ISimulation<TGameState> Tracker { get; }
         public GameEventNode<TGameState> Node { get; }
     }
 }

@@ -4,7 +4,7 @@ using CodeName.EventEngine.Tasks;
 
 namespace CodeName.EventEngine
 {
-    public interface IGameStateTracker<TGameState>
+    public interface ISimulation<TGameState>
     {
         public TGameState State { get; }
 

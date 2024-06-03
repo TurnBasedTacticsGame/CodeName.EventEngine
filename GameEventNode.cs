@@ -92,7 +92,7 @@ namespace CodeName.EventEngine
         }
 
         /// <summary>
-        /// Called by <see cref="IGameStateTracker{TGameState}"/> after the OnEventRaised event.
+        /// Called by <see cref="ISimulation{TGameState}"/> after the OnEventRaised event.
         /// </summary>
         public void Lock()
         {

@@ -11,7 +11,7 @@ namespace CodeName.EventEngine.GameEvents
     /// This implementation requires that the same events are raised during the replay compared to the original.
     /// This will need to be rewritten later on again.
     /// </remarks>
-    public class RegenerativeGameStateTracker<TGameState> : IGameStateTracker<TGameState>
+    public class RegenerativeSimulation<TGameState> : ISimulation<TGameState>
     {
         private int currentNodeI = 1;
 
@@ -24,7 +24,7 @@ namespace CodeName.EventEngine.GameEvents
         public EventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers => config.EventHandlers;
 
-        public RegenerativeGameStateTracker(TGameState state, GameEventNode<TGameState> events, Config config)
+        public RegenerativeSimulation(TGameState state, GameEventNode<TGameState> events, Config config)
         {
             this.config = config;
 

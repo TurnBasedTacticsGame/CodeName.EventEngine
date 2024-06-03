@@ -5,7 +5,7 @@ using CodeName.Serialization;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public class ConstGameStateTracker<TGameState> : IGameStateTracker<TGameState>
+    public class ConstSimulation<TGameState> : ISimulation<TGameState>
     {
         private static NullOpSerializer Serializer = new();
 
@@ -13,7 +13,7 @@ namespace CodeName.EventEngine.GameEvents
         public EventTracker<TGameState> Events { get; }
         public IReadOnlyList<IGameEventHandler<TGameState>> EventHandlers { get; }
 
-        public ConstGameStateTracker(TGameState state, IReadOnlyList<IGameEventHandler<TGameState>> eventHandlers)
+        public ConstSimulation(TGameState state, IReadOnlyList<IGameEventHandler<TGameState>> eventHandlers)
         {
             State = state;
             Events = new EventTracker<TGameState>(Serializer);

@@ -30,7 +30,7 @@ namespace CodeName.EventEngine.GameEvents.Matching
 
         public bool IsSuccess => Event != null;
 
-        public IGameStateTracker<TGameState> Tracker { get; }
+        public ISimulation<TGameState> Tracker { get; }
         public GameEventNode<TGameState> Node { get; }
         public TGameEvent Event { get; }
 
