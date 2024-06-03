@@ -1,4 +1,4 @@
 namespace CodeName.EventEngine.GameEvents.Matching
 {
-    public delegate bool EventMatchCondition<TGameEvent, TState>(NodeMatchContext<TGameEvent, TState> context) where TGameEvent : GameEvent<TState>;
+    public delegate bool EventMatchCondition<TGameEvent, TGameState>(NodeMatchContext<TGameEvent, TGameState> context) where TGameEvent : GameEvent<TGameState>;
 }

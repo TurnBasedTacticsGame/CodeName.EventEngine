@@ -2,12 +2,12 @@ using CodeName.EventEngine.Tasks;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public interface IAnimationHandler<TState>
+    public interface IAnimationHandler<TGameState>
     {
-        public StateTask OnAnimationEventRaised(ISimulation<TState> simulation);
+        public StateTask OnAnimationEventRaised(ISimulation<TGameState> simulation);
 
-        public StateTask OnAnimationEventConfirmed(ISimulation<TState> simulation);
+        public StateTask OnAnimationEventConfirmed(ISimulation<TGameState> simulation);
 
-        public StateTask OnAnimationEventApplied(ISimulation<TState> simulation);
+        public StateTask OnAnimationEventApplied(ISimulation<TGameState> simulation);
     }
 }

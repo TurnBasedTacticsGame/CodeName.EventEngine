@@ -1,8 +1,8 @@
 namespace CodeName.EventEngine.GameEvents.Matching
 {
-    public readonly struct NodeMatchContext<TGameEvent, TState> : INodeMatchResult<TState>
+    public readonly struct NodeMatchContext<TGameEvent, TGameState> : INodeMatchResult<TGameState>
     {
-        public NodeMatchContext(ISimulation<TState> simulation, GameEventNode<TState> node, TGameEvent gameEvent)
+        public NodeMatchContext(ISimulation<TGameState> simulation, GameEventNode<TGameState> node, TGameEvent gameEvent)
         {
             Simulation = simulation;
             Node = node;
@@ -11,8 +11,8 @@ namespace CodeName.EventEngine.GameEvents.Matching
 
         public bool IsSuccess => true;
 
-        public ISimulation<TState> Simulation { get; }
-        public GameEventNode<TState> Node { get; }
+        public ISimulation<TGameState> Simulation { get; }
+        public GameEventNode<TGameState> Node { get; }
 
         public TGameEvent Event { get; }
     }

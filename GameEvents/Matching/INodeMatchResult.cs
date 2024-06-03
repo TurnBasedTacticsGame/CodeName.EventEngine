@@ -1,10 +1,10 @@
 namespace CodeName.EventEngine.GameEvents.Matching
 {
-    public interface INodeMatchResult<TState>
+    public interface INodeMatchResult<TGameState>
     {
         public bool IsSuccess { get; }
 
-        public ISimulation<TState> Simulation { get; }
-        public GameEventNode<TState> Node { get; }
+        public ISimulation<TGameState> Simulation { get; }
+        public GameEventNode<TGameState> Node { get; }
     }
 }

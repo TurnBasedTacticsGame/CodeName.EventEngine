@@ -8,7 +8,7 @@ namespace CodeName.EventEngine.Utility
 {
     public static class DiffUtility
     {
-        public static void ValidateState<TState>(ISerializer serializer, TState current, TState expected)
+        public static void ValidateGameState<TGameState>(ISerializer serializer, TGameState current, TGameState expected)
         {
             if (HasDifferences(serializer, current, expected, out var currentJson, out var expectedJson))
             {
@@ -17,7 +17,7 @@ namespace CodeName.EventEngine.Utility
             }
         }
 
-        public static bool ValidateState<TState>(ISerializer serializer, TState current, GameEventNode<TState> node)
+        public static bool ValidateGameState<TGameState>(ISerializer serializer, TGameState current, GameEventNode<TGameState> node)
         {
             var expected = node.ExpectedState;
 
@@ -32,7 +32,7 @@ namespace CodeName.EventEngine.Utility
             return true;
         }
 
-        public static bool HasDifferences<TState>(ISerializer serializer, TState current, TState expected, out string currentJson, out string expectedJson)
+        public static bool HasDifferences<TGameState>(ISerializer serializer, TGameState current, TGameState expected, out string currentJson, out string expectedJson)
         {
             currentJson = serializer.Serialize(current);
             expectedJson = serializer.Serialize(expected);

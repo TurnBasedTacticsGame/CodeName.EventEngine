@@ -1,8 +1,8 @@
 namespace CodeName.EventEngine.GameEvents.Matching
 {
-    public struct CausedByMatchResult<TGameEvent, TState> : INodeMatchResult<TState> where TGameEvent : GameEvent<TState>
+    public struct CausedByMatchResult<TGameEvent, TGameState> : INodeMatchResult<TGameState> where TGameEvent : GameEvent<TGameState>
     {
-        public CausedByMatchResult(INodeMatchResult<TState> context, EventMatchCondition<TGameEvent, TState> condition)
+        public CausedByMatchResult(INodeMatchResult<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition)
         {
             Simulation = context.Simulation;
             Node = null;
@@ -18,7 +18,7 @@ namespace CodeName.EventEngine.GameEvents.Matching
 
             for (var i = 0; i < path.Count; i++)
             {
-                if (currentNode.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TState>(Simulation, currentNode, gameEvent)) ?? true))
+                if (currentNode.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TGameState>(Simulation, currentNode, gameEvent)) ?? true))
                 {
                     Node = currentNode;
                     Event = gameEvent;
@@ -30,11 +30,11 @@ namespace CodeName.EventEngine.GameEvents.Matching
 
         public bool IsSuccess => Event != null;
 
-        public ISimulation<TState> Simulation { get; }
-        public GameEventNode<TState> Node { get; }
+        public ISimulation<TGameState> Simulation { get; }
+        public GameEventNode<TGameState> Node { get; }
         public TGameEvent Event { get; }
 
-        public static implicit operator bool(CausedByMatchResult<TGameEvent, TState> value)
+        public static implicit operator bool(CausedByMatchResult<TGameEvent, TGameState> value)
         {
             return value.IsSuccess;
         }

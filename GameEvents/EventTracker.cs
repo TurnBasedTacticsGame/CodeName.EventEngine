@@ -3,28 +3,28 @@ using CodeName.Serialization;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public class EventTracker<TState>
+    public class EventTracker<TGameState>
     {
         private readonly ISerializer serializer;
 
         /// <summary>
-        /// Creates a new <see cref="EventTracker{TState}"/>.
+        /// Creates a new <see cref="EventTracker{TGameState}"/>.
         /// </summary>
         public EventTracker(ISerializer serializer)
         {
             this.serializer = serializer;
 
             PathToCurrentNode = new List<int>();
-            Tree = new GameEventNode<TState>(new SimulationRootEvent<TState>(), PathToCurrentNode, serializer);
+            Tree = new GameEventNode<TGameState>(new SimulationRootEvent<TGameState>(), PathToCurrentNode, serializer);
         }
 
         /// <summary>
-        /// Creates a new <see cref="EventTracker{TState}"/> using an existing event tree.
+        /// Creates a new <see cref="EventTracker{TGameState}"/> using an existing event tree.
         /// <para/>
         /// Note: This does not clone the existing event tree. The passed in event tree is used directly.
         /// If this is not desirable, clone the tree before passing it in.
         /// </summary>
-        public EventTracker(ISerializer serializer, GameEventNode<TState> root)
+        public EventTracker(ISerializer serializer, GameEventNode<TGameState> root)
         {
             this.serializer = serializer;
 
@@ -46,10 +46,10 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public GameEventNode<TState> Tree { get; }
+        public GameEventNode<TGameState> Tree { get; }
         public List<int> PathToCurrentNode { get; }
 
-        public GameEventNode<TState> CurrentNode
+        public GameEventNode<TGameState> CurrentNode
         {
             get
             {
@@ -64,7 +64,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public GameEventNode<TState> Push(TState state, GameEvent<TState> gameEvent, EventId eventId = default)
+        public GameEventNode<TGameState> Push(TGameState gameState, GameEvent<TGameState> gameEvent, EventId eventId = default)
         {
             var current = CurrentNode;
             var index = current.Children.Count;
@@ -72,7 +72,7 @@ namespace CodeName.EventEngine.GameEvents
             // Update path before passing to GameEventNode's constructor
             PathToCurrentNode.Add(index);
 
-            var node = new GameEventNode<TState>(gameEvent, PathToCurrentNode, serializer, eventId);
+            var node = new GameEventNode<TGameState>(gameEvent, PathToCurrentNode, serializer, eventId);
             current.Children.Add(node);
 
             return node;

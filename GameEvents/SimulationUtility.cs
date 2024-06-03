@@ -5,7 +5,7 @@ namespace CodeName.EventEngine.GameEvents
 {
     public static class SimulationUtility
     {
-        public static async StateTask OnEventRaised<TState>(ISimulation<TState> simulation, IEnumerable<IEventHandler<TState>> eventHandlers)
+        public static async StateTask OnEventRaised<TGameState>(ISimulation<TGameState> simulation, IEnumerable<IEventHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -13,7 +13,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnEventConfirmed<TState>(ISimulation<TState> simulation, IEnumerable<IEventHandler<TState>> eventHandlers)
+        public static async StateTask OnEventConfirmed<TGameState>(ISimulation<TGameState> simulation, IEnumerable<IEventHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -21,7 +21,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnEventApplied<TState>(ISimulation<TState> simulation, IEnumerable<IEventHandler<TState>> eventHandlers)
+        public static async StateTask OnEventApplied<TGameState>(ISimulation<TGameState> simulation, IEnumerable<IEventHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -29,7 +29,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnAnimationEventRaised<TState>(ISimulation<TState> simulation, IEnumerable<IAnimationHandler<TState>> eventHandlers)
+        public static async StateTask OnAnimationEventRaised<TGameState>(ISimulation<TGameState> simulation, IEnumerable<IAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -37,7 +37,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnAnimationEventConfirmed<TState>(ISimulation<TState> simulation, IEnumerable<IAnimationHandler<TState>> eventHandlers)
+        public static async StateTask OnAnimationEventConfirmed<TGameState>(ISimulation<TGameState> simulation, IEnumerable<IAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
@@ -45,7 +45,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public static async StateTask OnAnimationEventApplied<TState>(ISimulation<TState> simulation, IEnumerable<IAnimationHandler<TState>> eventHandlers)
+        public static async StateTask OnAnimationEventApplied<TGameState>(ISimulation<TGameState> simulation, IEnumerable<IAnimationHandler<TGameState>> eventHandlers)
         {
             foreach (var eventHandler in eventHandlers)
             {
