@@ -22,7 +22,7 @@ namespace CodeName.EventEngine.GameEvents
 
         public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
         {
-            var currentNode = Events.Push(State, gameEvent);
+            var currentNode = Events.Push(gameEvent);
             {
                 await SimulationUtility.OnEventRaised(this, config.EventHandlers);
                 currentNode.Lock();

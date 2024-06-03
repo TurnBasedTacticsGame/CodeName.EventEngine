@@ -53,7 +53,7 @@ namespace CodeName.EventEngine.GameEvents
                 Events.Pop();
             }
 
-            var node = Events.Push(State, originalNode.OriginalEvent, originalNode.Id);
+            var node = Events.Push(originalNode.OriginalEvent, originalNode.Id);
             {
                 await SimulationUtility.OnAnimationEventRaised(this, config.AnimationHandlers);
                 await SimulationUtility.OnEventRaised(this, config.EventHandlers);

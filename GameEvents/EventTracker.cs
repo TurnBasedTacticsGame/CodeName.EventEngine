@@ -64,7 +64,7 @@ namespace CodeName.EventEngine.GameEvents
             }
         }
 
-        public GameEventNode<TGameState> Push(TGameState gameState, GameEvent<TGameState> gameEvent, EventId eventId = default)
+        public GameEventNode<TGameState> Push(GameEvent<TGameState> gameEvent, EventId eventId = default)
         {
             var current = CurrentNode;
             var index = current.Children.Count;
