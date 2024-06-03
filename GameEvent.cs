@@ -1,7 +1,7 @@
-using CodeName.EventSystem.Tasks;
+using CodeName.EventEngine.Tasks;
 using CodeName.Serialization.Validation;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventEngine
 {
     [ValidateSerializeByValue]
     public abstract class GameEvent<TGameState>

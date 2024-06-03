@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace CodeName.EventSystem.Serialization
+namespace CodeName.EventEngine.Serialization
 {
     public class EventIdConverter : JsonConverter
     {

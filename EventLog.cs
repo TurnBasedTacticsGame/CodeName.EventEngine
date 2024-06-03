@@ -2,7 +2,7 @@ using CodeName.Serialization.Validation;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventEngine
 {
     [ValidateSerializeByValue]
     public class EventLog<TGameState>

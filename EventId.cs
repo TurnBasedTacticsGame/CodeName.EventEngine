@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventEngine
 {
     public struct EventId : IEquatable<EventId>
     {

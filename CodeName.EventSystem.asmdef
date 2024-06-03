@@ -1,5 +1,5 @@
 {
-    "name": "CodeName.EventSystem",
+    "name": "CodeName.EventEngine",
     "rootNamespace": "",
     "references": [
         "CodeName.Serialization",

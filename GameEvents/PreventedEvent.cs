@@ -1,7 +1,7 @@
 using CodeName.Serialization.Validation;
 using Newtonsoft.Json;
 
-namespace CodeName.EventSystem.GameEvents
+namespace CodeName.EventEngine.GameEvents
 {
     /// <summary>
     /// Null object used to replace an event that was prevented.

@@ -1,8 +1,8 @@
 {
-    "name": "CodeName.EventSystem.Tests.Editor",
+    "name": "CodeName.EventEngine.Tests.Editor",
     "rootNamespace": "",
     "references": [
-        "CodeName.EventSystem",
+        "CodeName.EventEngine",
         "Exanite.Core",
         "UniDi.UniDi",
         "UnityEditor.TestRunner",

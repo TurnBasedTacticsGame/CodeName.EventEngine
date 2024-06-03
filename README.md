@@ -1,4 +1,4 @@
-# CodeName.EventSystem
+# CodeName.EventEngine
 
 The event system works off of the following equations:
 - State + Input = Next State

@@ -2,7 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
-namespace CodeName.EventSystem.Tasks
+namespace CodeName.EventEngine.Tasks
 {
     public struct StateTaskAwaiter : INotifyCompletion
     {

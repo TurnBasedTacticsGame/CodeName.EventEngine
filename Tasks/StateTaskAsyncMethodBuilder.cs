@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace CodeName.EventSystem.Tasks
+namespace CodeName.EventEngine.Tasks
 {
     public struct StateTaskAsyncMethodBuilder
     {

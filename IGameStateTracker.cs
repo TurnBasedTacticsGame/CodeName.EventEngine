@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using CodeName.EventSystem.GameEvents;
-using CodeName.EventSystem.Tasks;
+using CodeName.EventEngine.GameEvents;
+using CodeName.EventEngine.Tasks;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventEngine
 {
     public interface IGameStateTracker<TGameState>
     {

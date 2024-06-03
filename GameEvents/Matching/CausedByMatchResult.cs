@@ -1,4 +1,4 @@
-namespace CodeName.EventSystem.GameEvents.Matching
+namespace CodeName.EventEngine.GameEvents.Matching
 {
     public struct CausedByMatchResult<TGameEvent, TGameState> : INodeMatchResult<TGameState> where TGameEvent : GameEvent<TGameState>
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using CodeName.Serialization;
 
-namespace CodeName.EventSystem.GameEvents
+namespace CodeName.EventEngine.GameEvents
 {
     public class GameEventTracker<TGameState>
     {

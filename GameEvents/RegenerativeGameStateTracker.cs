@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using CodeName.EventSystem.Tasks;
-using CodeName.EventSystem.Utility;
+using CodeName.EventEngine.Tasks;
+using CodeName.EventEngine.Utility;
 using CodeName.Serialization;
 using UnityEngine.Assertions;
 
-namespace CodeName.EventSystem.GameEvents
+namespace CodeName.EventEngine.GameEvents
 {
     /// <remarks>
     /// This implementation requires that the same events are raised during the replay compared to the original.

@@ -4,7 +4,7 @@ using CodeName.Serialization;
 using Json.Patch;
 using UnityEngine;
 
-namespace CodeName.EventSystem.Utility
+namespace CodeName.EventEngine.Utility
 {
     public static class DiffUtility
     {

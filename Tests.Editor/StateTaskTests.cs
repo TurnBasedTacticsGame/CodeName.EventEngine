@@ -1,8 +1,8 @@
 using System;
-using CodeName.EventSystem.Tasks;
+using CodeName.EventEngine.Tasks;
 using NUnit.Framework;
 
-namespace CodeName.EventSystem.Tests.Editor
+namespace CodeName.EventEngine.Tests.Editor
 {
     [TestFixture]
     public class StateTaskTests

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using CodeName.EventSystem.Tasks;
+using CodeName.EventEngine.Tasks;
 
-namespace CodeName.EventSystem.GameEvents
+namespace CodeName.EventEngine.GameEvents
 {
     public static class GameStateTrackerUtility
     {

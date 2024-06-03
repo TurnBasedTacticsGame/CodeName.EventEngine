@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeName.EventSystem.Tasks
+namespace CodeName.EventEngine.Tasks
 {
     public class StateTaskCompletionSource
     {

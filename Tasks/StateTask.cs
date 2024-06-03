@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace CodeName.EventSystem.Tasks
+namespace CodeName.EventEngine.Tasks
 {
     [AsyncMethodBuilder(typeof(StateTaskAsyncMethodBuilder))]
     public struct StateTask

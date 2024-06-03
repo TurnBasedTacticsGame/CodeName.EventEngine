@@ -1,6 +1,6 @@
-using CodeName.EventSystem.GameEvents.Matching;
+using CodeName.EventEngine.GameEvents.Matching;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventEngine
 {
     public static class EventMatchingUtility
     {

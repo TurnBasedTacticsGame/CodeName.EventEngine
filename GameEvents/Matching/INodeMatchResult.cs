@@ -1,4 +1,4 @@
-namespace CodeName.EventSystem.GameEvents.Matching
+namespace CodeName.EventEngine.GameEvents.Matching
 {
     public interface INodeMatchResult<TGameState>
     {

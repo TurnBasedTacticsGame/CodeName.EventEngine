@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeName.EventSystem.GameEvents;
+using CodeName.EventEngine.GameEvents;
 using CodeName.Serialization;
 using CodeName.Serialization.Validation;
 using Newtonsoft.Json;
 
-namespace CodeName.EventSystem
+namespace CodeName.EventEngine
 {
     [ValidateSerializeByValue]
     public class GameEventNode<TGameState>
