@@ -36,7 +36,7 @@ This simulation implements the equation:
 - State + Const Event = State
   - This is not part of the original equations that the event engine works off of.
 
-This is typically used for querying the game's state. Game event handlers can match on the event and store results as part of the event.
+This is typically used for querying the game's state. EventHandlers can match on the event and store results as part of the event.
 
 #### Const Events
 
@@ -79,17 +79,36 @@ if (simulation.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedB
 }
 ```
 
-### IGameEventHandler
+> Note: To avoid needing to specify GameState each time MatchOn is used, we suggest adding a copy of the EventMatchingUtility class to your project with the TGameState pre-specified.
+
+```cs
+// Note how the TGameState parameter is no longer needed and has been removed:
+public static MatchOnResult<TGameEvent, YourGameStateClass> MatchOn<TGameEvent>(
+    this ISimulation<YourGameStateClass> context,
+    EventMatchCondition<TGameEvent, YourGameStateClass> condition = null)
+    where TGameEvent : GameEvent<YourGameStateClass>
+{
+    return new MatchOnResult<TGameEvent, YourGameStateClass>(context, condition);
+}
+
+// Syntax with custom EventMatchingUtility class:
+if (simulation.MatchOn<UnitDamagedEvent>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent>())
+
+// Default syntax:
+if (simulation.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>())
+```
+
+### IEventHandler
 
 Uses Event Matching to _synchronously_ react to events. Can modify the game state directly or respond by raising additional events.
 
-GameEventHandlers are the main way to modify the game state.
+EventHandlers are the main way to modify the game state.
 
-### IGameAnimationHandler
+### IAnimationHandler
 
 Uses event matching to _asynchronously_ react to events. Cannot modify the game state or raise additional events.
 
-GameAnimationHandlers are the main way to play animations.
+AnimationHandlers are the main way to play animations.
 
 Because animations might require storing state between different event phases, event IDs can be used to determine when an event is confirmed and applied. For example, a character can wind up for an attack during the Confirmed phase, then hit and wind back down during the Applied phase.
 
@@ -104,9 +123,9 @@ StateTask works seamlessly with other task types, but using non-StateTasks in Ga
 ### When are events required?
 
 - Non-deterministic code. This is supported, but must be done in a specific way. See [common desync issues](#common-desync-issues).
-- When event handlers need to react to events that are happening.
+- When EventHandlers need to react to events that are happening.
 
-### Accessing event results in event handlers
+### Accessing event results in EventHandlers
 
 - Accessing GameState after applying GameEvent IS supported.
 
