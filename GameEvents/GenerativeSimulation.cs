@@ -5,22 +5,22 @@ using CodeName.Serialization;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public class GenerativeSimulation<TGameState> : ISimulation<TGameState>
+    public class GenerativeSimulation<TState> : ISimulation<TState>
     {
         private readonly Config config;
 
-        public TGameState State { get; }
-        public EventTracker<TGameState> Events { get; }
-        public IReadOnlyList<IEventHandler<TGameState>> EventHandlers => config.EventHandlers;
+        public TState State { get; }
+        public EventTracker<TState> Events { get; }
+        public IReadOnlyList<IEventHandler<TState>> EventHandlers => config.EventHandlers;
 
-        public GenerativeSimulation(TGameState state, Config config)
+        public GenerativeSimulation(TState state, Config config)
         {
             this.config = config;
             State = config.Serializer.Clone(state);
-            Events = new EventTracker<TGameState>(config.Serializer);
+            Events = new EventTracker<TState>(config.Serializer);
         }
 
-        public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
+        public async StateTask RaiseEvent(GameEvent<TState> gameEvent)
         {
             var currentNode = Events.Push(State, gameEvent);
             {
@@ -35,7 +35,7 @@ namespace CodeName.EventEngine.GameEvents
             Events.Pop();
         }
 
-        private void StoreExpectedState(GameEventNode<TGameState> currentNode)
+        private void StoreExpectedState(GameEventNode<TState> currentNode)
         {
             if (config.IsDebugMode)
             {
@@ -47,7 +47,7 @@ namespace CodeName.EventEngine.GameEvents
         {
             public bool IsDebugMode { get; set; } = false;
             public ISerializer Serializer { get; set; }
-            public IReadOnlyList<IEventHandler<TGameState>> EventHandlers { get; set; } = Array.Empty<IEventHandler<TGameState>>();
+            public IReadOnlyList<IEventHandler<TState>> EventHandlers { get; set; } = Array.Empty<IEventHandler<TState>>();
         }
     }
 }

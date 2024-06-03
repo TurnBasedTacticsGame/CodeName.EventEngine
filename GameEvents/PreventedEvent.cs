@@ -6,15 +6,15 @@ namespace CodeName.EventEngine.GameEvents
     /// <summary>
     /// Null object used to replace an event that was prevented.
     /// </summary>
-    public class PreventedEvent<TGameState> : GameEvent<TGameState>
+    public class PreventedEvent<TState> : GameEvent<TState>
     {
-        public PreventedEvent(GameEvent<TGameState> originalEvent)
+        public PreventedEvent(GameEvent<TState> originalEvent)
         {
             OriginalEvent = originalEvent;
         }
 
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)] [SerializeByValue]
-        public GameEvent<TGameState> OriginalEvent { get; }
+        public GameEvent<TState> OriginalEvent { get; }
 
         public override string ToString()
         {

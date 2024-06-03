@@ -4,14 +4,14 @@ using CodeName.EventEngine.Tasks;
 
 namespace CodeName.EventEngine
 {
-    public interface ISimulation<TGameState>
+    public interface ISimulation<TState>
     {
-        public TGameState State { get; }
+        public TState State { get; }
 
-        public EventTracker<TGameState> Events { get; }
-        public GameEventNode<TGameState> CurrentNode => Events.CurrentNode;
+        public EventTracker<TState> Events { get; }
+        public GameEventNode<TState> CurrentNode => Events.CurrentNode;
 
-        public IReadOnlyList<IEventHandler<TGameState>> EventHandlers { get; }
+        public IReadOnlyList<IEventHandler<TState>> EventHandlers { get; }
 
         /// <summary>
         /// Raise an event to be applied.
@@ -23,6 +23,6 @@ namespace CodeName.EventEngine
         /// 2. OnEventConfirmed - Use to react to events before they are applied. <br/>
         /// 3. OnEventApplied - Use to react to events after they are applied.
         /// </summary>
-        public StateTask RaiseEvent(GameEvent<TGameState> gameEvent);
+        public StateTask RaiseEvent(GameEvent<TState> gameEvent);
     }
 }

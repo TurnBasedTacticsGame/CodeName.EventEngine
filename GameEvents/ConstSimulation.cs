@@ -5,22 +5,22 @@ using CodeName.Serialization;
 
 namespace CodeName.EventEngine.GameEvents
 {
-    public class ConstSimulation<TGameState> : ISimulation<TGameState>
+    public class ConstSimulation<TState> : ISimulation<TState>
     {
         private static NullOpSerializer Serializer = new();
 
-        public TGameState State { get; }
-        public EventTracker<TGameState> Events { get; }
-        public IReadOnlyList<IEventHandler<TGameState>> EventHandlers { get; }
+        public TState State { get; }
+        public EventTracker<TState> Events { get; }
+        public IReadOnlyList<IEventHandler<TState>> EventHandlers { get; }
 
-        public ConstSimulation(TGameState state, IReadOnlyList<IEventHandler<TGameState>> eventHandlers)
+        public ConstSimulation(TState state, IReadOnlyList<IEventHandler<TState>> eventHandlers)
         {
             State = state;
-            Events = new EventTracker<TGameState>(Serializer);
+            Events = new EventTracker<TState>(Serializer);
             EventHandlers = eventHandlers;
         }
 
-        public async StateTask RaiseEvent(GameEvent<TGameState> gameEvent)
+        public async StateTask RaiseEvent(GameEvent<TState> gameEvent)
         {
             var currentNode = Events.Push(State, gameEvent);
             {

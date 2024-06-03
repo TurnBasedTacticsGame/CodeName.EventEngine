@@ -4,23 +4,23 @@ namespace CodeName.EventEngine
 {
     public static class EventMatchingUtility
     {
-        public static MatchOnResult<TGameEvent, TGameState> MatchOn<TGameEvent, TGameState>(this ISimulation<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
+        public static MatchOnResult<TGameEvent, TState> MatchOn<TGameEvent, TState>(this ISimulation<TState> context, EventMatchCondition<TGameEvent, TState> condition = null) where TGameEvent : GameEvent<TState>
         {
-            return new MatchOnResult<TGameEvent, TGameState>(context, condition);
+            return new MatchOnResult<TGameEvent, TState>(context, condition);
         }
 
-        public static MatchOnResult<TGameEvent, TGameState> MatchOn<TGameEvent, TGameState>(this ISimulation<TGameState> context, out MatchOnResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
+        public static MatchOnResult<TGameEvent, TState> MatchOn<TGameEvent, TState>(this ISimulation<TState> context, out MatchOnResult<TGameEvent, TState> result, EventMatchCondition<TGameEvent, TState> condition = null) where TGameEvent : GameEvent<TState>
         {
             result = MatchOn(context, condition);
             return result;
         }
 
-        public static CausedByMatchResult<TGameEvent, TGameState> CausedBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
+        public static CausedByMatchResult<TGameEvent, TState> CausedBy<TGameEvent, TState>(this INodeMatchResult<TState> context, EventMatchCondition<TGameEvent, TState> condition = null) where TGameEvent : GameEvent<TState>
         {
-            return new CausedByMatchResult<TGameEvent, TGameState>(context, condition);
+            return new CausedByMatchResult<TGameEvent, TState>(context, condition);
         }
 
-        public static CausedByMatchResult<TGameEvent, TGameState> CausedBy<TGameEvent, TGameState>(this INodeMatchResult<TGameState> context, out CausedByMatchResult<TGameEvent, TGameState> result, EventMatchCondition<TGameEvent, TGameState> condition = null) where TGameEvent : GameEvent<TGameState>
+        public static CausedByMatchResult<TGameEvent, TState> CausedBy<TGameEvent, TState>(this INodeMatchResult<TState> context, out CausedByMatchResult<TGameEvent, TState> result, EventMatchCondition<TGameEvent, TState> condition = null) where TGameEvent : GameEvent<TState>
         {
             result = CausedBy(context, condition);
             return result;

@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 namespace CodeName.EventEngine
 {
     [ValidateSerializeByValue]
-    public class GameEventNode<TGameState>
+    public class GameEventNode<TState>
     {
         [JsonConstructor]
         private GameEventNode() {}
 
-        public GameEventNode(GameEvent<TGameState> gameEvent, IEnumerable<int> path, ISerializer serializer, EventId eventId = default)
+        public GameEventNode(GameEvent<TState> gameEvent, IEnumerable<int> path, ISerializer serializer, EventId eventId = default)
         {
             Id = eventId.IsValid() ? eventId : EventId.Generate();
             OriginalEvent = serializer.Clone(gameEvent);
@@ -34,7 +34,7 @@ namespace CodeName.EventEngine
         /// Modifying this event is not recommended.
         /// </summary>
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)] [SerializeByValue]
-        public GameEvent<TGameState> OriginalEvent { get; private set; }
+        public GameEvent<TState> OriginalEvent { get; private set; }
 
         /// <summary>
         /// The event that will be applied after the OnEventConfirmed phase.
@@ -42,7 +42,7 @@ namespace CodeName.EventEngine
         /// Modifying this event is allowed.
         /// </summary>
         [JsonProperty(TypeNameHandling = TypeNameHandling.Auto)] [SerializeByValue]
-        public GameEvent<TGameState> Event { get; private set; }
+        public GameEvent<TState> Event { get; private set; }
 
         /// <summary>
         /// The path of this <see cref="GameEventNode{TState}"/> in the event tree.
@@ -56,7 +56,7 @@ namespace CodeName.EventEngine
         /// In other words, child events are events caused by this event.
         /// </summary>
         [JsonProperty] [SerializeByValue]
-        public List<GameEventNode<TGameState>> Children { get; private set; } = new();
+        public List<GameEventNode<TState>> Children { get; private set; } = new();
 
         /// <summary>
         /// A locked event can no longer be prevented.
@@ -68,7 +68,7 @@ namespace CodeName.EventEngine
         /// Expected game state after the event is applied. Usually used for debugging purposes.
         /// </summary>
         [JsonIgnore]
-        public TGameState ExpectedState { get; set; }
+        public TState ExpectedState { get; set; }
 
         /// <summary>
         /// Prevent an event from being applied.
@@ -83,16 +83,16 @@ namespace CodeName.EventEngine
                 throw new InvalidOperationException("Event has been locked. Events can only be prevented during the OnEventRaised event.");
             }
 
-            if (Event is PreventedEvent<TGameState>)
+            if (Event is PreventedEvent<TState>)
             {
                 throw new InvalidOperationException("Event has already been prevented. Events can only be prevented once.");
             }
 
-            Event = new PreventedEvent<TGameState>(Event);
+            Event = new PreventedEvent<TState>(Event);
         }
 
         /// <summary>
-        /// Called by <see cref="ISimulation{TGameState}"/> after the OnEventRaised event.
+        /// Called by <see cref="ISimulation{TState}"/> after the OnEventRaised event.
         /// </summary>
         public void Lock()
         {

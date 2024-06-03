@@ -4,9 +4,9 @@ using CodeName.Serialization.Validation;
 namespace CodeName.EventEngine
 {
     [ValidateSerializeByValue]
-    public abstract class GameEvent<TGameState>
+    public abstract class GameEvent<TState>
     {
-        public virtual StateTask Apply(ISimulation<TGameState> simulation)
+        public virtual StateTask Apply(ISimulation<TState> simulation)
         {
             return StateTask.CompletedTask;
         }

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace CodeName.EventEngine
 {
     [ValidateSerializeByValue]
-    public class EventLog<TGameState>
+    public class EventLog<TState>
     {
         [JsonConstructor]
         private EventLog() {}
@@ -16,7 +16,7 @@ namespace CodeName.EventEngine
         /// <remarks>
         /// Parameters are not cloned.
         /// </remarks>
-        public EventLog(GameEventNode<TGameState> events, TGameState originalState = default, TGameState expectedState = default)
+        public EventLog(GameEventNode<TState> events, TState originalState = default, TState expectedState = default)
         {
             OriginalState = originalState;
             ExpectedState = expectedState;
@@ -28,7 +28,7 @@ namespace CodeName.EventEngine
         /// The events that occurred.
         /// </summary>
         [NotNull]
-        [SerializeByValue] public GameEventNode<TGameState> Events { get; set; }
+        [SerializeByValue] public GameEventNode<TState> Events { get; set; }
 
         /// <summary>
         /// The original state prior to applying the <see cref="Events"/>.
@@ -38,7 +38,7 @@ namespace CodeName.EventEngine
         /// It is up to the user to decide whether to provide this value or not.
         /// </remarks>
         [CanBeNull]
-        [SerializeByValue] public TGameState OriginalState { get; set; }
+        [SerializeByValue] public TState OriginalState { get; set; }
 
         /// <summary>
         /// The expected state after applying the <see cref="Events"/>.
@@ -47,7 +47,7 @@ namespace CodeName.EventEngine
         /// It is up to the user to decide whether to provide this value or not.
         /// </remarks>
         [CanBeNull]
-        [SerializeByValue] public TGameState ExpectedState { get; set; }
+        [SerializeByValue] public TState ExpectedState { get; set; }
 
         /// <summary>
         /// Creates a new event log using the values of this log.
@@ -55,9 +55,9 @@ namespace CodeName.EventEngine
         /// <remarks>
         /// Values are not cloned.
         /// </remarks>
-        public EventLog<TGameState> ShallowClone()
+        public EventLog<TState> ShallowClone()
         {
-            return new EventLog<TGameState>(Events, OriginalState, ExpectedState);
+            return new EventLog<TState>(Events, OriginalState, ExpectedState);
         }
     }
 }

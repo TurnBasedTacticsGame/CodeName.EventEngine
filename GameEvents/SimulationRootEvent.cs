@@ -1,7 +1,7 @@
 namespace CodeName.EventEngine.GameEvents
 {
     /// <summary>
-    /// Null object used to mark the root of the GameStateTracker event tree.
+    /// Null object used to mark the root of a <see cref="ISimulation{TState}"/>'s event tree.
     /// </summary>
-    public class SimulationRootEvent<TGameState> : GameEvent<TGameState> {}
+    public class SimulationRootEvent<TState> : GameEvent<TState> {}
 }
