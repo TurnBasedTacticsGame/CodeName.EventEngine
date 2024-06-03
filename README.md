@@ -1,6 +1,6 @@
 # CodeName.EventEngine
 
-The event system works off of the following equations:
+The event engine works off of the following equations:
 - State + Input = Next State
   - Applying input can give you the next state.
 - State + Input = Event Log
@@ -9,38 +9,38 @@ The event system works off of the following equations:
     - Applying the event log can also give you the next state.
     - This allows for replays.
 
-## GameStateTrackers
+## Simulations
 
 These keep track of game state and all events that are raised.
 
-All trackers guarantee that GameState passed in through their constructor will not be modified.
+All simulations guarantee that GameState passed in through their constructor will not be modified.
 
-### GenerativeGameStateTracker
+### GenerativeSimulation
 
-This tracker implements the equations:
+This simulation implements the equations:
 - State + Input = Next State
 - State + Input = Event Log
 
 This is typically used on the server to generate an event log that can be sent to clients.
 
-### RegenerativeGameStateTracker
+### RegenerativeSimulation
 
-This tracker implements the equation:
+This simulation implements the equation:
 - State + Event Log = Next State
 
 This is typically used on the client to play animations.
 
-### ConstGameStateTracker
+### ConstSimulation
 
-This tracker implements the equation:
+This simulation implements the equation:
 - State + Const Event = State
-  - This is not part of the original equations that the event system works off of.
+  - This is not part of the original equations that the event engine works off of.
 
 This is typically used for querying the game's state. Game event handlers can match on the event and store results as part of the event.
 
 #### Const Events
 
-Const events are events that are used with the ConstGameStateTracker.
+Const events are events that are used with the ConstSimulation.
 Contrary to their name, the events themselves CAN be modified, but the GameState CANNOT be modified.
 
 ## EventHandlers
@@ -61,21 +61,21 @@ Event matching is the main way to detect when events happen and react to them.
 ```cs
 // Matching for a event
 // Note: This supports inheritance so you can match for a base class and be notified of all subclasses of that class
-if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged))
+if (simulation.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged))
 {
     Debug.Log($"{unitDamaged.Event.UnitId} was damaged for {unitDamaged.Event.Damage} damage");
 
     // Heal damaged unit for 1 HP
-    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.Event.UnitId, 1));
+    await simulation.RaiseEvent(new UnitHealedEvent(unitDamaged.Event.UnitId, 1));
 }
 
 // Matching for a event caused by another event
-if (tracker.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>())
+if (simulation.MatchOn<UnitDamagedEvent, GameState>(out var unitDamaged).CausedBy<UnitUsedAbilityEvent, GameState>())
 {
     Debug.Log($"{unitDamaged.Event.UnitId} was damaged for {unitDamaged.Event.Damage} damage by an ability");
 
     // Heal damaged unit for 1 HP after being damaged by an ability
-    await tracker.RaiseEvent(new UnitHealedEvent(unitDamaged.Event.UnitId, 1));
+    await simulation.RaiseEvent(new UnitHealedEvent(unitDamaged.Event.UnitId, 1));
 }
 ```
 
@@ -97,7 +97,7 @@ Because animations might require storing state between different event phases, e
 
 Custom task type that is designed to be ran synchronously. While this seems counter intuitive to the purpose of async-await, StateTask allows code to be suspended. This allows code to be written in an intuitive async-await style and be suspended while animations are playing.
 
-StateTask works seamlessly with other task types, but using non-StateTasks in GameEventHandlers is not recommended. This is because most GameStateTrackers expect GameEventHandlers to run synchronously.
+StateTask works seamlessly with other task types, but using non-StateTasks in GameEventHandlers is not recommended. This is because most Simulations expect GameEventHandlers to run synchronously.
 
 ## FAQ
 
@@ -111,14 +111,14 @@ StateTask works seamlessly with other task types, but using non-StateTasks in Ga
 - Accessing GameState after applying GameEvent IS supported.
 
 - Accessing GameEvent after applying the GameEvent is NOT supported.
-  - This is enforced by GenerativeGameStateTracker and RegenerativeGameStateTracker.
+  - This is enforced by GenerativeSimulation and RegenerativeSimulation.
 
 ```cs
 // I recommend inlining this in the ApplyEvent call so it is not possible to access gameEvent
 var gameEvent = new GameEvent();
-await tracker.ApplyEvent(gameEvent);
+await simulation.ApplyEvent(gameEvent);
 
-// tracker.State will be updated
+// simulation.State will be updated
 // gameEvent will be defensively copied and not contain any changes made to the event
 ```
 
@@ -131,10 +131,10 @@ await tracker.ApplyEvent(gameEvent);
 Duplicated entities:
 ```cs
 // Incorrect - Unit will be duplicated in event log
-await tracker.ApplyEvent(new DamageTakenEvent(unit));
+await simulation.ApplyEvent(new DamageTakenEvent(unit));
 
 // Correct - Save entity ID to event log
-await tracker.ApplyEvent(new DamageTakenEvent(unit.Id));
+await simulation.ApplyEvent(new DamageTakenEvent(unit.Id));
 ```
 
 Non-deterministic code:
@@ -143,7 +143,7 @@ Non-deterministic code:
 unit.Health -= Random.Range(0, 10);
 
 // Correct - RNG saved to event log
-await tracker.ApplyEvent(new DamageTakenEvent(unit.Id, Random.Range(0, 10)));
+await simulation.ApplyEvent(new DamageTakenEvent(unit.Id, Random.Range(0, 10)));
 ```
 
 ### Other desync issues
