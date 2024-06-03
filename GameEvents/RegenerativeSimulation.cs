@@ -29,7 +29,7 @@ namespace CodeName.EventEngine.GameEvents
             this.config = config;
 
             State = config.Serializer.Clone(state);
-            Events = new EventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, events.Id));
+            Events = new EventTracker<TGameState>(config.Serializer, new GameEventNode<TGameState>(new SimulationRootEvent<TGameState>(), Array.Empty<int>(), config.Serializer, events.Id));
 
             originalEventList = new List<GameEventNode<TGameState>>();
             FlattenEventTree(events, originalEventList);
@@ -55,14 +55,14 @@ namespace CodeName.EventEngine.GameEvents
 
             var node = Events.Push(State, originalNode.OriginalEvent, originalNode.Id);
             {
-                await GameStateTrackerUtility.OnAnimationEventRaised(this, config.AnimationHandlers);
-                await GameStateTrackerUtility.OnEventRaised(this, config.EventHandlers);
+                await SimulationUtility.OnAnimationEventRaised(this, config.AnimationHandlers);
+                await SimulationUtility.OnEventRaised(this, config.EventHandlers);
                 node.Lock();
-                await GameStateTrackerUtility.OnAnimationEventConfirmed(this, config.AnimationHandlers);
-                await GameStateTrackerUtility.OnEventConfirmed(this, config.EventHandlers);
+                await SimulationUtility.OnAnimationEventConfirmed(this, config.AnimationHandlers);
+                await SimulationUtility.OnEventConfirmed(this, config.EventHandlers);
                 await node.Event.Apply(this);
-                await GameStateTrackerUtility.OnAnimationEventApplied(this, config.AnimationHandlers);
-                await GameStateTrackerUtility.OnEventApplied(this, config.EventHandlers);
+                await SimulationUtility.OnAnimationEventApplied(this, config.AnimationHandlers);
+                await SimulationUtility.OnEventApplied(this, config.EventHandlers);
 
                 var shouldValidate = config.IsDebugMode && node.ExpectedState != null;
                 if (shouldValidate && !DiffUtility.ValidateGameState(config.Serializer, State, node))

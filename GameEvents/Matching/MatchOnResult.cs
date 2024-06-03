@@ -4,12 +4,12 @@ namespace CodeName.EventEngine.GameEvents.Matching
     {
         public MatchOnResult(ISimulation<TGameState> context, EventMatchCondition<TGameEvent, TGameState> condition)
         {
-            Tracker = context;
+            Simulation = context;
             Node = null;
             Event = null;
 
             var node = context.Events.CurrentNode;
-            if (node.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TGameState>(Tracker, node, gameEvent)) ?? true))
+            if (node.Event is TGameEvent gameEvent && (condition?.Invoke(new NodeMatchContext<TGameEvent, TGameState>(Simulation, node, gameEvent)) ?? true))
             {
                 Node = node;
                 Event = gameEvent;
@@ -18,7 +18,7 @@ namespace CodeName.EventEngine.GameEvents.Matching
 
         public bool IsSuccess => Event != null;
 
-        public ISimulation<TGameState> Tracker { get; }
+        public ISimulation<TGameState> Simulation { get; }
         public GameEventNode<TGameState> Node { get; }
         public TGameEvent Event { get; }
 

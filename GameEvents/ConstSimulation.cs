@@ -24,11 +24,11 @@ namespace CodeName.EventEngine.GameEvents
         {
             var currentNode = Events.Push(State, gameEvent);
             {
-                await GameStateTrackerUtility.OnEventRaised(this, EventHandlers);
+                await SimulationUtility.OnEventRaised(this, EventHandlers);
                 currentNode.Lock();
-                await GameStateTrackerUtility.OnEventConfirmed(this, EventHandlers);
+                await SimulationUtility.OnEventConfirmed(this, EventHandlers);
                 await currentNode.Event.Apply(this);
-                await GameStateTrackerUtility.OnEventApplied(this, EventHandlers);
+                await SimulationUtility.OnEventApplied(this, EventHandlers);
             }
             Events.Pop();
         }

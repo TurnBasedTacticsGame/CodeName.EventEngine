@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CodeName.Serialization;
 
@@ -16,7 +15,7 @@ namespace CodeName.EventEngine.GameEvents
             this.serializer = serializer;
 
             PathToCurrentNode = new List<int>();
-            Tree = new GameEventNode<TGameState>(new TrackerRootEvent<TGameState>(), PathToCurrentNode, serializer);
+            Tree = new GameEventNode<TGameState>(new SimulationRootEvent<TGameState>(), PathToCurrentNode, serializer);
         }
 
         /// <summary>
